@@ -3,12 +3,19 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Seeding products...');
-
-  // Clean old products
+  console.log('Cleaning existing database entries...');
+  
+  // Clear tables in the correct dependency order
+  await prisma.orderRecipient.deleteMany({});
+  await prisma.order.deleteMany({});
+  await prisma.design.deleteMany({});
+  await prisma.bundleItem.deleteMany({});
+  await prisma.bundle.deleteMany({});
   await prisma.product.deleteMany({});
 
-  const products = [
+  console.log('Seeding products...');
+
+  const productsData = [
     {
       sku: 'DRK-001',
       name: 'Premium Ceramic Mug',
@@ -91,21 +98,83 @@ async function main() {
     }
   ];
 
-  for (const product of products) {
-    await prisma.product.create({
+  const products: any[] = [];
+  for (const prod of productsData) {
+    const createdProduct = await prisma.product.create({
       data: {
-        sku: product.sku,
-        name: product.name,
-        category: product.category,
-        description: product.description,
-        basePrice: product.basePrice,
-        images: product.images,
-        placementZones: product.placementZones
+        sku: prod.sku,
+        name: prod.name,
+        category: prod.category,
+        description: prod.description,
+        basePrice: prod.basePrice,
+        images: prod.images,
+        placementZones: prod.placementZones
       }
     });
+    products.push(createdProduct);
   }
 
-  console.log('Seeding complete! Curated catalog is ready.');
+  console.log(`Seeded ${products.length} products.`);
+
+  // Find product helper
+  const getProductBySku = (sku: string) => products.find(p => p.sku === sku);
+
+  console.log('Seeding pre-made bundles...');
+
+  const presetBundlesData = [
+    {
+      name: 'New Hire Welcome Kit',
+      price: 135.0,
+      items: [
+        { sku: 'AP-002', quantity: 1 }, // Hoodie
+        { sku: 'ST-003', quantity: 1 }, // Notebook
+        { sku: 'DRK-001', quantity: 1 } // Mug
+      ]
+    },
+    {
+      name: 'Executive Writer Set',
+      price: 65.0,
+      items: [
+        { sku: 'ST-003', quantity: 1 }, // Notebook
+        { sku: 'ST-006', quantity: 1 }  // Pen
+      ]
+    },
+    {
+      name: 'Modern Tech Workspace Pack',
+      price: 115.0,
+      items: [
+        { sku: 'TC-004', quantity: 1 }, // Wireless Charger
+        { sku: 'DRK-001', quantity: 1 }, // Mug
+        { sku: 'ST-006', quantity: 1 }  // Pen
+      ]
+    }
+  ];
+
+  for (const bundle of presetBundlesData) {
+    const createdBundle = await prisma.bundle.create({
+      data: {
+        name: bundle.name,
+        price: bundle.price,
+        type: 'PRESET'
+      }
+    });
+
+    for (const item of bundle.items) {
+      const product = getProductBySku(item.sku);
+      if (product) {
+        await prisma.bundleItem.create({
+          data: {
+            bundleId: createdBundle.id,
+            productId: product.id,
+            quantity: item.quantity
+          }
+        });
+      }
+    }
+  }
+
+  console.log('Seeded preset bundles successfully.');
+  console.log('Seeding complete! Curated catalog and bundle items are fully established.');
 }
 
 main()

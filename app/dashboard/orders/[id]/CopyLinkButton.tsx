@@ -18,24 +18,24 @@ export default function CopyLinkButton({ recipientId }: { recipientId: string })
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center bg-[#FAF9F5]/40 border border-[#0A0A0A]/10 p-4 w-full">
+    <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-[#F5F1E6]/40 border border-[#8F9C86]/15 rounded-[1.5rem] p-5 w-full shadow-sm">
       <div className="flex-grow space-y-1">
-        <span className="text-[7px] uppercase tracking-widest text-[#0A0A0A]/40 block font-sans">Designee Access Gateway</span>
-        <span className="text-[9px] uppercase tracking-widest font-mono text-[#0A0A0A] block truncate max-w-md">
+        <span className="text-[10px] uppercase tracking-widest text-[#1F2B1A]/50 block font-sans">Designee Access Gateway</span>
+        <span className="text-xs uppercase tracking-widest font-mono text-[#1F2B1A] block truncate max-w-md">
           {copied ? 'Gateway URL Loaded' : 'SECURE_GATEWAY_NODE://collect_address'}
         </span>
       </div>
       <button
         onClick={handleCopy}
-        className="w-full sm:w-auto px-6 py-3 bg-[#0A0A0A] hover:bg-[#9C3D2E] text-[#EAE8E0] text-[8px] tracking-[0.2em] uppercase font-bold flex items-center justify-center gap-2 transition-colors duration-300 border border-[#0A0A0A]"
+        className="w-full sm:w-auto px-6 py-3.5 bg-[#1F2B1A] hover:bg-[#D27D5B] text-[#FAF6EE] text-[10px] tracking-[0.2em] uppercase font-bold rounded-full flex items-center justify-center gap-2 transition-colors duration-300 border border-transparent hover:shadow-md cursor-pointer"
       >
         {copied ? (
           <>
-            <Check className="w-3 h-3 stroke-[2]" /> Copied Gateway
+            <Check className="w-4 h-4 stroke-[2.5]" /> Copied Gateway
           </>
         ) : (
           <>
-            <Copy className="w-3 h-3 stroke-[1.5]" /> Copy Secure Link
+            <Copy className="w-4 h-4 stroke-[1.5]" /> Copy Secure Link
           </>
         )}
       </button>

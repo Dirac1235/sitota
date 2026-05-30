@@ -1,13 +1,24 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 const prisma = new PrismaClient();
 
+// GET: Retrieve the address book recipients for the logged-in user
 export async function GET(request: Request) {
   try {
-    let user = await prisma.user.findFirst();
-    if (!user) {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user || !session.user.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email }
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: 'User records mismatch' }, { status: 404 });
     }
 
     const recipients = await prisma.recipient.findMany({
@@ -22,15 +33,28 @@ export async function GET(request: Request) {
   }
 }
 
+// POST: Create a new recipient contact in the logged-in user's private directory
 export async function POST(request: Request) {
   try {
-    let user = await prisma.user.findFirst();
-    if (!user) {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user || !session.user.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email }
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: 'User records mismatch' }, { status: 404 });
     }
 
     const data = await request.json();
     const { name, email, phone, address, tags } = data;
+
+    if (!name) {
+      return NextResponse.json({ error: 'Recipient name is required' }, { status: 400 });
+    }
 
     const recipient = await prisma.recipient.create({
       data: {

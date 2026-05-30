@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 const prisma = new PrismaClient();
 
@@ -7,10 +9,17 @@ export async function POST(request: Request) {
   try {
     const data = await request.json();
     
-    // In a real app, authenticate user
-    let user = await prisma.user.findFirst();
-    if (!user) {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user || !session.user.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email }
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: 'User record mismatch' }, { status: 404 });
     }
 
     const {
@@ -23,14 +32,19 @@ export async function POST(request: Request) {
     // Fetch design to calculate total (in real app, we'd look up product price)
     const design = await prisma.design.findUnique({
       where: { id: designId },
-      include: { product: true }
+      include: { 
+        product: true,
+        bundle: true
+      }
     });
 
     if (!design) {
       return NextResponse.json({ error: 'Design not found' }, { status: 404 });
     }
 
-    const unitPrice = design.product?.basePrice || 0;
+    const unitPrice = design.bundle 
+      ? design.bundle.price 
+      : (design.product?.basePrice || 0);
     const totalAmount = unitPrice * recipients.length;
 
     // Create the order
@@ -66,7 +80,46 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user || !session.user.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email }
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: 'User record mismatch' }, { status: 404 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const designId = searchParams.get('designId') || searchParams.get('id');
+    
+    if (designId) {
+      const design = await prisma.design.findUnique({
+        where: { id: designId },
+        include: { 
+          product: true,
+          bundle: {
+            include: {
+              items: {
+                include: {
+                  product: true
+                }
+              }
+            }
+          }
+        }
+      });
+      if (!design) {
+        return NextResponse.json({ error: 'Design not found' }, { status: 404 });
+      }
+      return NextResponse.json({ success: true, design });
+    }
+
     const orders = await prisma.order.findMany({
+      where: { userId: user.id },
       include: {
         design: {
           include: {
