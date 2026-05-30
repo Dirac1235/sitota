@@ -51,6 +51,7 @@ export async function POST(request: Request) {
     const order = await prisma.order.create({
       data: {
         userId: user.id,
+        orgId: user.organizationId || null,
         designId,
         giftingMode: giftingMode || 'SINGLE',
         totalAmount,

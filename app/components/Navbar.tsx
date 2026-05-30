@@ -1,10 +1,23 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
+import { 
+  ChevronDown, 
+  User, 
+  Settings, 
+  LogOut, 
+  LayoutDashboard,
+  Sparkles
+} from 'lucide-react';
 
 export default function Navbar() {
   const { data: session } = useSession();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  const closeDropdown = () => setDropdownOpen(false);
 
   return (
     <nav className="bg-[#FAF6EE]/80 backdrop-blur-md sticky top-0 z-50 border-b border-[#8F9C86]/10 w-full transition-all duration-300">
@@ -41,19 +54,62 @@ export default function Navbar() {
           {/* Right side controls */}
           <div className="flex items-center space-x-4 md:space-x-8 h-full pl-6">
             {session ? (
-              <div className="flex items-center h-full space-x-6 md:space-x-8">
-                <Link href="/dashboard" className="text-xs uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors">
-                  Workspace
-                </Link>
-                <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#8F9C86] hidden sm:block">
-                  🌳 {session.user?.name || session.user?.email}
-                </span>
+              <div 
+                className="relative h-full flex items-center"
+                onMouseLeave={closeDropdown}
+              >
+                {/* Trigger Button: User Name + Chevron */}
                 <button
-                  onClick={() => signOut({ callbackUrl: '/' })}
-                  className="px-6 py-3 bg-[#1F2B1A] text-[#FAF6EE] text-xs uppercase tracking-[0.2em] font-bold rounded-full hover:bg-[#D27D5B] transition-colors duration-300 shadow-sm"
+                  onClick={toggleDropdown}
+                  className="flex items-center gap-2 text-xs uppercase tracking-[0.25em] font-extrabold text-[#1F2B1A]/80 hover:text-[#D27D5B] transition-all focus:outline-none cursor-pointer py-3 px-4 border border-[#8F9C86]/20 bg-[#FAF9F5] rounded-full shadow-sm hover:shadow-md"
                 >
-                  Log Out
+                  <span className="max-w-[150px] truncate">
+                    🌳 {session.user?.name || session.user?.email?.split('@')[0]}
+                  </span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${dropdownOpen ? 'rotate-180 text-[#D27D5B]' : ''}`} />
                 </button>
+
+                {/* Dropdown Menu Panel */}
+                {dropdownOpen && (
+                  <div className="absolute right-0 top-16 w-56 bg-[#FAF6EE] border border-[#8F9C86]/20 rounded-2xl shadow-xl py-3 z-50 animate-fade-in flex flex-col">
+                    <span className="px-5 pb-2 border-b border-[#8F9C86]/10 text-[8px] uppercase tracking-widest font-bold text-[#1F2B1A]/40 block select-none">
+                      Workspace Navigation
+                    </span>
+                    
+                    <Link 
+                      href="/dashboard" 
+                      onClick={closeDropdown}
+                      className="px-5 py-3 hover:bg-[#1F2B1A] hover:text-[#FAF6EE] text-xs uppercase tracking-wider font-extrabold text-[#1F2B1A]/80 transition-colors flex items-center gap-3"
+                    >
+                      <LayoutDashboard className="w-4 h-4 opacity-70" /> Workspace Portal
+                    </Link>
+
+                    <Link 
+                      href="/dashboard/profile" 
+                      onClick={closeDropdown}
+                      className="px-5 py-3 hover:bg-[#1F2B1A] hover:text-[#FAF6EE] text-xs uppercase tracking-wider font-extrabold text-[#1F2B1A]/80 transition-colors flex items-center gap-3"
+                    >
+                      <User className="w-4 h-4 opacity-70" /> Profile Settings
+                    </Link>
+
+                    <Link 
+                      href="/dashboard?tab=settings" 
+                      onClick={closeDropdown}
+                      className="px-5 py-3 hover:bg-[#1F2B1A] hover:text-[#FAF6EE] text-xs uppercase tracking-wider font-extrabold text-[#1F2B1A]/80 transition-colors flex items-center gap-3"
+                    >
+                      <Settings className="w-4 h-4 opacity-70" /> Workspace Settings
+                    </Link>
+
+                    <div className="border-t border-[#8F9C86]/10 mt-2 pt-2">
+                      <button
+                        onClick={() => signOut({ callbackUrl: '/' })}
+                        className="w-full text-left px-5 py-3 hover:bg-red-600 hover:text-white text-xs uppercase tracking-wider font-extrabold text-red-700 transition-colors flex items-center gap-3 border-0 bg-transparent cursor-pointer"
+                      >
+                        <LogOut className="w-4 h-4 opacity-70" /> Sign Out
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="flex items-center space-x-4">

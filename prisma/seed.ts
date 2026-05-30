@@ -95,6 +95,84 @@ async function main() {
       placementZones: [
         { name: 'Cap Laser Engrave', max_width: 40, max_height: 8 }
       ]
+    },
+    {
+      sku: 'AP-007',
+      name: 'Organic Linen Tote Bag',
+      category: 'Apparel',
+      description: 'A durable, raw organic linen tote with reinforced cotton canvas webbing straps and spacious internal pockets. Perfect for everyday carrying.',
+      basePrice: 35.0,
+      images: [
+        'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600'
+      ],
+      placementZones: [
+        { name: 'Front Center Print', max_width: 120, max_height: 120 }
+      ]
+    },
+    {
+      sku: 'ST-008',
+      name: 'Solid Brushed Brass Ruler',
+      category: 'Stationery',
+      description: 'Solid heavy-gauge brass desk ruler with laser-etched metric and imperial increments. Develops a gorgeous warm patina over time.',
+      basePrice: 18.0,
+      images: [
+        'https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&q=80&w=600'
+      ],
+      placementZones: [
+        { name: 'Center Engrave', max_width: 50, max_height: 10 }
+      ]
+    },
+    {
+      sku: 'DRK-009',
+      name: 'Double-Walled Glass Tumbler',
+      category: 'Drinkware',
+      description: 'Hand-blown borosilicate glass tumbler with double-wall insulation, preserving beverage temperatures cleanly with a floating visual effect.',
+      basePrice: 22.0,
+      images: [
+        'https://images.unsplash.com/photo-1577937927133-66ef06acdf18?auto=format&fit=crop&q=80&w=600'
+      ],
+      placementZones: [
+        { name: 'Front Etch', max_width: 60, max_height: 60 }
+      ]
+    },
+    {
+      sku: 'TC-010',
+      name: 'Leather Desk Charging Mat',
+      category: 'Tech',
+      description: 'Full-grain vegetable-tanned leather desk blotter integrated with a 15W high-speed wireless charging zone and brushed gold trim.',
+      basePrice: 95.0,
+      images: [
+        'https://images.unsplash.com/photo-1586816879360-004f5b0c51e3?auto=format&fit=crop&q=80&w=600'
+      ],
+      placementZones: [
+        { name: 'Bottom Right Deboss', max_width: 50, max_height: 20 }
+      ]
+    },
+    {
+      sku: 'CUL-011',
+      name: 'Single-Origin Honey Jar',
+      category: 'Culinary',
+      description: 'Raw, unpasteurized white honey harvested sustainably from organic wildflower meadows, packaged in a custom heavy glass jar.',
+      basePrice: 28.0,
+      images: [
+        'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=600'
+      ],
+      placementZones: [
+        { name: 'Label Print', max_width: 40, max_height: 40 }
+      ]
+    },
+    {
+      sku: 'CUL-012',
+      name: 'Cedarwood Soy Wax Candle',
+      category: 'Culinary',
+      description: 'Hand-poured candle made from sustainable domestic soy wax and natural essential oils of red cedarwood, frankincense, and dark amber.',
+      basePrice: 32.0,
+      images: [
+        'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&q=80&w=600'
+      ],
+      placementZones: [
+        { name: 'Glass Label Print', max_width: 50, max_height: 50 }
+      ]
     }
   ];
 

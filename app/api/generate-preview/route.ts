@@ -168,12 +168,18 @@ export async function POST(request: Request) {
         }
       }
 
+      // Extract actual prompt directive and strip serialized JSON metadata (Section 2.3)
+      let promptForAI = intentPrompt || '';
+      if (intentPrompt && intentPrompt.includes('|||JSON|||')) {
+        promptForAI = intentPrompt.split('|||JSON|||')[0].trim();
+      }
+
       // STEP 2: Generate text interpretation summary using Gemini 2.5 Flash
       try {
         const summaryPrompt = `You are an AI brand design assistant for Sitota. 
         Write a single, concise one-line summary (maximum 15 words) describing the product rendering based on these settings.
         Collection/Product: ${itemName} (${category})
-        User Custom Directive: "${intentPrompt || 'None'}"
+        User Custom Directive: "${promptForAI || 'None'}"
         Brand Logo Description: "${logoDescription}"
         Text Inscription 1: "${textLine1 || 'None'}"
         Text Inscription 2: "${textLine2 || 'None'}"
@@ -201,7 +207,7 @@ export async function POST(request: Request) {
       Line 2: "${textLine2 || ''}"
       Typography style font: ${fontStyleHint || 'Auto'}.
       Text and logo material color choice: ${textColor || 'Auto'}.
-      The overall aesthetic matches this design directive: "${intentPrompt || 'clean, luxury minimalist packaging'}".
+      The overall aesthetic matches this design directive: "${promptForAI || 'clean, luxury minimalist packaging'}".
       Setting: Beautiful professional catalog flat-lay backdrop, exquisite high-end studio lighting, sharp focus, 8k resolution photograph. No raw text overlay, do not show any code or website interface elements.`;
 
       try {

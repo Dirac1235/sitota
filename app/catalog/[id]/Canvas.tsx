@@ -408,10 +408,10 @@ export default function Canvas({ product }: { product: Product }) {
                    </div>
                  </div>
               </div>
-            ) : (
+             ) : (
               <div className="w-full h-full flex flex-col relative group rounded-[1.5rem] overflow-hidden">
                 <img
-                  src={previewUrl}
+                  src={previewUrl || undefined}
                   alt="Custom render"
                   className="w-full h-full object-cover transition-all duration-[2s] ease-out filter sepia-[0.03]"
                 />

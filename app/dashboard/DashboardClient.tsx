@@ -497,7 +497,7 @@ export default function DashboardClient() {
             <div className="flex justify-between items-center pb-4 border-b border-[#8F9C86]/15">
               <div>
                 <span className="text-[8px] uppercase tracking-[0.25em] font-bold text-[#D27D5B] block mb-1">
-                  STATION 02 // CHOOSE BASE ELEMENT
+                  CHOOSE BASE ELEMENT
                 </span>
                 <h3 className="font-serif text-3xl uppercase tracking-tight text-[#1F2B1A] leading-none">
                   Select <span className="italic font-light lowercase text-[#D27D5B]">canvas</span>
@@ -576,7 +576,7 @@ export default function DashboardClient() {
           <div className="bg-[#FAF6EE] border border-[#8F9C86]/20 p-8 max-w-2xl w-full relative shadow-2xl rounded-[2.5rem] space-y-6 flex flex-col max-h-[80vh] animate-fade-in">
             <div>
               <span className="text-[8px] uppercase tracking-[0.25em] font-bold text-[#D27D5B] block mb-1">
-                SYS.08 // BULK INGESTION STAGING
+                BULK INGESTION STAGING
               </span>
               <h3 className="font-serif text-3xl uppercase tracking-tight text-[#1F2B1A] leading-none">
                 Review <span className="italic font-light lowercase text-[#D27D5B]">import</span>
@@ -622,7 +622,7 @@ export default function DashboardClient() {
           <div>
             <span className="text-xs uppercase tracking-[0.3em] font-bold text-[#D27D5B] block mb-3 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-[#D27D5B] rounded-full animate-pulse"></span>
-              SYS.07 // CENTRALIZED CLIENT WORKSPACE
+              CENTRALIZED CLIENT WORKSPACE
             </span>
             <h1 className="font-serif text-5xl md:text-6xl text-[#1F2B1A] uppercase tracking-tight leading-none">
               Client <span className="italic font-light lowercase text-[#D27D5B]">portal</span>
@@ -977,7 +977,7 @@ export default function DashboardClient() {
                 {/* Left Panel: Ingest Single / CSV */}
                 <div className="lg:col-span-5 border border-[#8F9C86]/15 bg-[#F5F1E6]/30 backdrop-blur-[1px] p-8 lg:p-10 rounded-[2rem] space-y-8 lg:sticky lg:top-28 shadow-sm">
                   <div>
-                    <span className="text-[9px] uppercase tracking-[0.25em] font-bold text-[#D27D5B] block mb-2">STATION 01 // DIRECTORY ENTRY</span>
+                    <span className="text-[9px] uppercase tracking-[0.25em] font-bold text-[#D27D5B] block mb-2">DIRECTORY ENTRY</span>
                     <h3 className="font-serif text-3xl uppercase tracking-tight text-[#1F2B1A]">Log <span className="italic font-light lowercase text-[#D27D5B]">designee</span></h3>
                   </div>
 
@@ -1117,7 +1117,7 @@ export default function DashboardClient() {
 
                   {/* CSV mass uploader */}
                   <div className="border-t border-[#8F9C86]/15 pt-6 space-y-4">
-                    <span className="text-[8px] uppercase tracking-[0.25em] font-bold text-[#D27D5B] block">STATION 02 // CSV MASS LOADER</span>
+                    <span className="text-[8px] uppercase tracking-[0.25em] font-bold text-[#D27D5B] block">CSV MASS LOADER</span>
                     {csvError && <div className="text-[10px] text-red-600 font-bold">// ERROR: {csvError}</div>}
 
                     <label className="relative border border-dashed border-[#8F9C86]/40 rounded-2xl bg-[#FAF6EE]/50 hover:bg-[#FAF9F5] p-6 flex flex-col items-center justify-center cursor-pointer transition-colors group text-center shadow-sm">
@@ -1206,7 +1206,7 @@ export default function DashboardClient() {
                 {/* Left: Create Group Form */}
                 <div className="lg:col-span-5 border border-[#8F9C86]/15 bg-[#F5F1E6]/30 backdrop-blur-[1px] p-8 lg:p-10 rounded-[2rem] space-y-8 lg:sticky lg:top-28 shadow-sm">
                   <div>
-                    <span className="text-[9px] uppercase tracking-[0.25em] font-bold text-[#D27D5B] block mb-2">STATION 03 // GROUP FORMATION</span>
+                    <span className="text-[9px] uppercase tracking-[0.25em] font-bold text-[#D27D5B] block mb-2">GROUP FORMATION</span>
                     <h3 className="font-serif text-3xl uppercase tracking-tight text-[#1F2B1A]">New <span className="italic font-light lowercase text-[#D27D5B]">cohort</span></h3>
                   </div>
 

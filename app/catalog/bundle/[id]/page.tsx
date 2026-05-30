@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import { PrismaClient } from '@prisma/client';
 import BundleCanvas from './BundleCanvas';
 
+export const dynamic = 'force-dynamic';
+
 const prisma = new PrismaClient();
 
 export default async function BundlePage({ params }: { params: { id: string } }) {
@@ -15,6 +17,12 @@ export default async function BundlePage({ params }: { params: { id: string } })
           product: true
         }
       }
+    }
+  });
+
+  const allProducts = await prisma.product.findMany({
+    orderBy: {
+      sku: 'asc'
     }
   });
 
@@ -38,9 +46,20 @@ export default async function BundlePage({ params }: { params: { id: string } })
           basePrice: i.product.basePrice,
           category: i.product.category,
           sku: i.product.sku,
-          description: i.product.description
+          description: i.product.description,
+          isCustomizable: i.product.isCustomizable
         }))
       }} 
+      allProducts={allProducts.map(p => ({
+        id: p.id,
+        sku: p.sku,
+        name: p.name,
+        category: p.category,
+        basePrice: p.basePrice,
+        description: p.description,
+        isCustomizable: p.isCustomizable,
+        images: p.images
+      }))}
     />
   );
 }

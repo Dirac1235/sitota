@@ -253,7 +253,7 @@ function CheckoutForm() {
           <div>
             <span className="text-xs uppercase tracking-[0.3em] font-bold text-[#D27D5B] block mb-3 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-[#D27D5B] rounded-full"></span>
-              SYS.06 // CHECKOUT CHECKPOINT
+              CHECKOUT CHECKPOINT
             </span>
             <h1 className="font-serif text-5xl md:text-6xl text-[#1F2B1A] uppercase tracking-tight leading-none">
               Gifting <span className="italic font-light lowercase text-[#D27D5B]">checkout</span>
