@@ -47,6 +47,17 @@ export default function BundlesClient({
   const [isCreatingCustom, setIsCreatingCustom] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Handle modifying a preset welcome kit
+  const handleModifyPreset = (bundle: PresetBundle) => {
+    setCustomName(`MODIFIED ${bundle.name.toUpperCase()}`);
+    const itemsMap: { [productId: string]: number } = {};
+    bundle.items.forEach(item => {
+      itemsMap[item.productId] = item.quantity;
+    });
+    setSelectedItems(itemsMap);
+    setActiveTab('CUSTOM');
+  };
+
   // Calculate prices for custom bundle
   const handleAddProduct = (productId: string) => {
     setSelectedItems(prev => ({
@@ -159,6 +170,16 @@ export default function BundlesClient({
         </div>
       </header>
 
+      {/* Catalog discovery sub-navigation */}
+      <div className="flex gap-8 border-b border-[#8F9C86]/10 pb-4 text-xs uppercase tracking-[0.25em] font-bold">
+        <Link href="/catalog" className="text-[#1F2B1A]/40 hover:text-[#1F2B1A] pb-4 transition-colors">
+          Individual Products
+        </Link>
+        <Link href="/catalog/bundles" className="text-[#1F2B1A] border-b-2 border-[#1F2B1A] pb-4 -mb-[18px]">
+          Curated Bundles & Packs
+        </Link>
+      </div>
+
       {activeTab === 'PRESET' ? (
         /* Preset Bundles Grid */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-16">
@@ -202,13 +223,19 @@ export default function BundlesClient({
               </div>
 
               {/* Action Button */}
-              <div className="pt-8 border-t border-[#8F9C86]/15 mt-8">
+              <div className="pt-8 border-t border-[#8F9C86]/15 mt-8 space-y-3">
                 <Link 
                   href={`/catalog/bundle/${bundle.id}`}
-                  className="w-full py-4 bg-[#D27D5B] text-[#FAF6EE] text-xs tracking-[0.25em] uppercase font-bold rounded-full hover:bg-[#1F2B1A] transition-colors duration-500 shadow-sm flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-[#D27D5B] text-[#FAF6EE] text-xs tracking-[0.25em] uppercase font-bold rounded-full hover:bg-[#1F2B1A] transition-colors duration-500 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
                 >
                   Configure & Brand Bundle <ArrowRight className="w-4 h-4" />
                 </Link>
+                <button
+                  onClick={() => handleModifyPreset(bundle)}
+                  className="w-full py-3 bg-transparent border border-[#1F2B1A]/20 text-[#1F2B1A] text-xs tracking-[0.2em] uppercase font-bold rounded-full hover:bg-[#1F2B1A]/5 hover:border-[#1F2B1A] transition-colors duration-300 flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  Modify Package Elements
+                </button>
               </div>
             </div>
           ))}

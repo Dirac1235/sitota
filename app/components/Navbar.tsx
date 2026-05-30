@@ -20,7 +20,11 @@ export default function Navbar() {
             </Link>
             <div className="hidden md:flex ml-8 space-x-8">
               <Link href="/catalog" className="text-xs uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors relative group py-2">
-                Curated Collection
+                Products
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#D27D5B] transition-all duration-300 group-hover:w-full rounded-full"></span>
+              </Link>
+              <Link href="/catalog/bundles" className="text-xs uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors relative group py-2">
+                Gift Bundles
                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#D27D5B] transition-all duration-300 group-hover:w-full rounded-full"></span>
               </Link>
               <Link href="/about" className="text-xs uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors relative group py-2">

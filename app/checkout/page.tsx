@@ -65,6 +65,18 @@ function CheckoutForm() {
   const [bulkName, setBulkName] = useState('');
   const [bulkEmail, setBulkEmail] = useState('');
   const [collectAddressesViaLink, setCollectAddressesViaLink] = useState(false);
+  const [groups, setGroups] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('/api/groups')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.groups) {
+          setGroups(data.groups);
+        }
+      })
+      .catch((err) => console.error('Error fetching campaign groups:', err));
+  }, []);
 
   useEffect(() => {
     if (!designId) {
@@ -408,6 +420,49 @@ function CheckoutForm() {
                 </div>
               ) : (
                 <div className="border border-[#8F9C86]/15 bg-[#F5F1E6]/30 backdrop-blur-[1px] p-8 lg:p-12 rounded-[2rem] space-y-8">
+                  {/* Load Saved Campaign Group */}
+                  {groups.length > 0 && (
+                    <div className="border border-[#8F9C86]/20 p-5 rounded-2xl bg-[#FAF6EE]/50 space-y-3">
+                      <label className="block text-[10px] uppercase tracking-widest text-[#1F2B1A] font-bold select-none cursor-pointer leading-normal">
+                        🌿 Load Saved Campaign Group (Auto-fill members from Address Book)
+                      </label>
+                      <select
+                        onChange={(e) => {
+                          const groupId = e.target.value;
+                          if (!groupId) return;
+                          const selectedGroup = groups.find(g => g.id === groupId);
+                          if (selectedGroup && selectedGroup.members) {
+                            const mappedMembers = selectedGroup.members.map((member: any) => ({
+                              name: member.name,
+                              email: member.email || '',
+                              address: member.address ? {
+                                street: member.address.street || '',
+                                city: member.address.city || '',
+                                state: member.address.state || '',
+                                postalCode: member.address.postalCode || member.address.zip || '',
+                                country: member.address.country || 'United States'
+                              } : null
+                            }));
+                            setBulkRecipients(prev => [
+                              ...prev,
+                              ...mappedMembers.filter((m: any) => !prev.some((p: any) => p.email === m.email))
+                            ]);
+                          }
+                          // Reset selection back to empty
+                          e.target.value = '';
+                        }}
+                        className="w-full bg-transparent border-b border-[#8F9C86]/30 text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none cursor-pointer pb-2"
+                      >
+                        <option value="">-- Choose Campaign Group --</option>
+                        {groups.map(g => (
+                          <option key={g.id} value={g.id} className="bg-[#FAF6EE] text-[#1F2B1A]">
+                            {g.name.toUpperCase()} ({g.members.length} members)
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
                   {/* Address Collection Checkbox */}
                   <div className="flex items-center gap-4 border border-[#8F9C86]/20 p-5 rounded-2xl bg-[#FAF6EE]/50">
                     <input 

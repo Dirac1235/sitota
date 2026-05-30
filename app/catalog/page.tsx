@@ -36,6 +36,16 @@ export default async function Catalog() {
           <button className="px-5 py-3 rounded-full bg-[#F5F1E6]/60 border border-[#8F9C86]/20 text-[#1F2B1A]/70 hover:bg-[#1F2B1A] hover:text-[#FAF6EE] transition-colors duration-300">Hardware</button>
         </div>
       </header>
+
+      {/* Catalog discovery sub-navigation */}
+      <div className="flex gap-8 border-b border-[#8F9C86]/10 pb-4 text-xs uppercase tracking-[0.25em] font-bold">
+        <Link href="/catalog" className="text-[#1F2B1A] border-b-2 border-[#1F2B1A] pb-4 -mb-[18px]">
+          Individual Products
+        </Link>
+        <Link href="/catalog/bundles" className="text-[#1F2B1A]/40 hover:text-[#1F2B1A] pb-4 transition-colors">
+          Curated Bundles & Packs
+        </Link>
+      </div>
       
       {/* Soft Rounded Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full pb-16">

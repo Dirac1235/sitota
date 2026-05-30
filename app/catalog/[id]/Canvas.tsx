@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 interface Product {
@@ -17,6 +17,7 @@ interface Product {
 
 export default function Canvas({ product }: { product: Product }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session } = useSession();
   const [prompt, setPrompt] = useState('');
   const [textLine1, setTextLine1] = useState('');
@@ -25,6 +26,8 @@ export default function Canvas({ product }: { product: Product }) {
   const [placementHint, setPlacementHint] = useState('Center');
   const [textColor, setTextColor] = useState('Auto');
   const [fontStyleHint, setFontStyleHint] = useState('Auto');
+  const [backgroundTreatment, setBackgroundTreatment] = useState('No Change');
+  const [customBackgroundHex, setCustomBackgroundHex] = useState('#FAF6EE');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [previewGenerated, setPreviewGenerated] = useState(false);
@@ -62,6 +65,8 @@ export default function Canvas({ product }: { product: Product }) {
           placementHint,
           textColor,
           fontStyleHint, // Pass font style to backend
+          backgroundTreatment,
+          customBackgroundHex: backgroundTreatment === 'Solid Color Fill' ? customBackgroundHex : undefined,
         }),
       });
       const data = await res.json();
@@ -78,12 +83,18 @@ export default function Canvas({ product }: { product: Product }) {
     }
   };
 
+  const isFromVault = searchParams.get('from') === 'vault';
+
   const handleApprove = () => {
     if (!session) {
-      router.push(`/login?callbackUrl=/catalog/${product.id}`);
+      router.push(`/login?callbackUrl=/catalog/${product.id}${isFromVault ? '?from=vault' : ''}`);
       return;
     }
-    router.push(`/checkout?designId=${designId}`);
+    if (isFromVault) {
+      router.push('/dashboard?tab=vault');
+    } else {
+      router.push(`/checkout?designId=${designId}`);
+    }
   };
 
   const parsedImages = product.images ? (product.images as string[]) : [];
@@ -129,27 +140,75 @@ export default function Canvas({ product }: { product: Product }) {
           <div className="p-8 lg:p-12 flex-grow flex flex-col gap-8 bg-[#FAF6EE]">
             
             {/* Intent Prompt */}
-            <div className="relative border border-[#8F9C86]/25 rounded-2xl bg-[#F5F1E6]/30 overflow-hidden group focus-within:border-[#D27D5B]/70 transition-colors">
-              <div className="absolute top-3 left-4 text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50">
-                Creative Directive (Prompt)
-              </div>
-              <textarea
-                className="w-full h-32 pt-9 px-4 pb-3 bg-transparent text-xs font-sans uppercase tracking-widest leading-[2] text-[#1F2B1A] focus:outline-none resize-none placeholder:text-[#1F2B1A]/30"
-                placeholder="DEFINE YOUR VISION. E.G., 'A SEEDLING MOTIF CENTERED ON BACK WITH TERRASCOTTA TEXT.'"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-              />
-              <div className="border-t border-[#8F9C86]/15 flex justify-between items-center px-4 py-2.5 bg-[#F5F1E6]/40">
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <label className="block text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]">// Step 01 — Describe Your Vision</label>
                 <button 
                   onClick={() => setPrompt("Botanical luxury. Soft olive branch crest centered elegantly in terracotta tones.")}
-                  className="text-xs uppercase tracking-[0.25em] font-bold text-[#D27D5B] hover:text-[#1F2B1A] transition-colors"
+                  className="text-xs uppercase tracking-[0.2em] font-bold text-[#D27D5B] hover:text-[#1F2B1A] transition-colors cursor-pointer"
                 >
-                  🍃 Suggest Direction
+                  ✨ Suggest Direction
                 </button>
-                <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/40">
-                  {prompt.length}/500
-                </span>
               </div>
+
+              <div className="relative border border-[#8F9C86]/25 rounded-2xl bg-[#F5F1E6]/30 overflow-hidden focus-within:border-[#D27D5B]/70 transition-colors">
+                <textarea
+                  className="w-full h-32 pt-4 px-4 pb-3 bg-transparent text-xs font-sans uppercase tracking-widest leading-[2] text-[#1F2B1A] focus:outline-none resize-none placeholder:text-[#1F2B1A]/30"
+                  placeholder="DEFINE YOUR VISION. E.G., 'A SEEDLING MOTIF CENTERED ON BACK WITH TERRASCOTTA TEXT.'"
+                  value={prompt}
+                  maxLength={500}
+                  onChange={(e) => setPrompt(e.target.value)}
+                />
+                <div className="border-t border-[#8F9C86]/15 flex justify-between items-center px-4 py-2.5 bg-[#F5F1E6]/40">
+                  <span className="text-[10px] uppercase tracking-widest font-mono text-[#1F2B1A]/50">Natural Creative Brief</span>
+                  <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/40">
+                    {prompt.length}/500
+                  </span>
+                </div>
+              </div>
+
+              {/* Clarity Score Banner (Section 2.2 - Step 1) */}
+              {(() => {
+                const getClarityScore = (text: string) => {
+                  const trimmed = text.trim();
+                  if (trimmed.length === 0) {
+                    return { 
+                      label: 'Low', 
+                      color: 'text-red-600 border-red-200 bg-red-500/10', 
+                      tip: 'Try describing some details, like logo placement or your preferred colors.' 
+                    };
+                  }
+                  if (trimmed.length < 25) {
+                    return { 
+                      label: 'Low', 
+                      color: 'text-red-600 border-red-200 bg-red-500/10', 
+                      tip: 'Add a color preference or where you\'d like the logo placed.' 
+                    };
+                  }
+                  if (trimmed.length < 65) {
+                    return { 
+                      label: 'Good', 
+                      color: 'text-[#D27D5B] border-[#D27D5B]/20 bg-[#D27D5B]/10', 
+                      tip: 'Nice — mention the occasion or mood to help refine the visual tone.' 
+                    };
+                  }
+                  return { 
+                    label: 'Detailed', 
+                    color: 'text-green-600 border-green-200 bg-green-600/10', 
+                    tip: 'Great — your preview should match closely.' 
+                  };
+                };
+                const clarity = getClarityScore(prompt);
+                return (
+                  <div className={`border p-4 rounded-xl flex items-start gap-3 transition-colors ${clarity.color}`}>
+                    <span className="w-2 h-2 bg-current rounded-full mt-1.5 flex-shrink-0" />
+                    <div className="space-y-0.5">
+                      <span className="text-[10px] uppercase tracking-widest font-extrabold block">Prompt Clarity: {clarity.label}</span>
+                      <span className="text-[10px] uppercase tracking-wider block font-sans opacity-80 leading-normal">{clarity.tip}</span>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Asset Upload & Text Lines Grid */}
@@ -199,6 +258,24 @@ export default function Canvas({ product }: { product: Product }) {
                     value={textLine2}
                     onChange={(e) => setTextLine2(e.target.value)}
                   />
+                </div>
+              </div>
+            </div>
+
+            {/* Step 4: Gift Message Insert Card (Section 2.2 - Step 4) */}
+            <div className="space-y-3 border-t border-[#8F9C86]/15 pt-6">
+              <label className="block text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]">// Step 04 — Packaging Insert message (Not Printed)</label>
+              <div className="relative border border-[#8F9C86]/25 rounded-2xl bg-[#F5F1E6]/10 overflow-hidden focus-within:border-[#D27D5B]/70 transition-colors">
+                <textarea
+                  className="w-full h-24 pt-4 px-4 pb-3 bg-transparent text-xs font-sans uppercase tracking-widest leading-[2] text-[#1F2B1A] focus:outline-none resize-none placeholder:text-[#1F2B1A]/30"
+                  placeholder="Write a personal note that accompanies the gift inside the unboxing box..."
+                  value={giftMessage}
+                  maxLength={200}
+                  onChange={(e) => setGiftMessage(e.target.value)}
+                />
+                <div className="border-t border-[#8F9C86]/15 flex justify-between items-center px-4 py-2 bg-[#F5F1E6]/40 text-[9px] uppercase tracking-widest text-[#1F2B1A]/50 font-bold">
+                  <span>This insert note will not be printed on items.</span>
+                  <span>{giftMessage.length}/200</span>
                 </div>
               </div>
             </div>
@@ -260,6 +337,40 @@ export default function Canvas({ product }: { product: Product }) {
                       <option value="Bold Display">Bold Display</option>
                     </select>
                   </div>
+
+                  <div className="relative border-b border-[#8F9C86]/20 pb-1">
+                    <label className="block text-[9px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Background Treatment</label>
+                    <select
+                      className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none cursor-pointer text-ellipsis overflow-hidden"
+                      value={backgroundTreatment}
+                      onChange={(e) => setBackgroundTreatment(e.target.value)}
+                    >
+                      <option value="No Change">No Change (Original)</option>
+                      <option value="Subtle Pattern">Subtle Pattern</option>
+                      <option value="Solid Color Fill">Solid Color Fill</option>
+                    </select>
+                  </div>
+
+                  {backgroundTreatment === 'Solid Color Fill' && (
+                    <div className="md:col-span-3 relative border-b border-[#8F9C86]/20 pb-1.5 animate-fade-in flex items-center gap-4 mt-2">
+                      <div className="flex-grow">
+                        <label className="block text-[9px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Background Solid Hex</label>
+                        <input
+                          type="text"
+                          className="w-full bg-transparent text-xs font-mono uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                          placeholder="#FAF6EE"
+                          value={customBackgroundHex}
+                          onChange={(e) => setCustomBackgroundHex(e.target.value)}
+                        />
+                      </div>
+                      <input 
+                        type="color" 
+                        className="w-8 h-8 rounded-full border border-[#8F9C86]/20 cursor-pointer overflow-hidden p-0"
+                        value={customBackgroundHex.startsWith('#') && customBackgroundHex.length === 7 ? customBackgroundHex : '#FAF6EE'}
+                        onChange={(e) => setCustomBackgroundHex(e.target.value)}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -328,9 +439,9 @@ export default function Canvas({ product }: { product: Product }) {
               </button>
               <button 
                 onClick={handleApprove}
-                className="flex-1 py-4.5 bg-[#D27D5B] text-[#FAF6EE] text-xs tracking-[0.25em] uppercase font-bold rounded-full hover:bg-[#FAF6EE] hover:text-[#1F2B1A] transition-colors duration-300 shadow-md"
+                className="flex-1 py-4.5 bg-[#D27D5B] text-[#FAF6EE] text-xs tracking-[0.25em] uppercase font-bold rounded-full hover:bg-[#FAF6EE] hover:text-[#1F2B1A] transition-colors duration-300 shadow-md cursor-pointer flex items-center justify-center gap-1.5"
               >
-                Approve & Continue
+                {isFromVault ? "Save Design & Exit to Vault" : "Approve & Continue"}
               </button>
             </div>
           )}
