@@ -1,19 +1,25 @@
 'use client';
 
-import { useState, Suspense } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, Suspense, useEffect } from 'react';
+import { signIn, useSession } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+  const { status } = useSession();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      window.location.href = callbackUrl;
+    }
+  }, [status, callbackUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,14 +32,12 @@ function LoginForm() {
       password,
     });
 
-    setLoading(false);
-
     if (res?.error) {
+      setLoading(false);
       setError('Invalid email or password.');
     } else {
       // Redirect back to original page (e.g. checkout, catalog details)
-      router.push(callbackUrl);
-      router.refresh();
+      window.location.href = callbackUrl;
     }
   };
 

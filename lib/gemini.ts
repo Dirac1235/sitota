@@ -3,8 +3,7 @@ import { GoogleGenAI } from '@google/genai';
 /**
  * Reusable Unified Google Gen AI Service
  * Built utilizing the latest official SDK (@google/genai) and models:
- * - nano-banana-pro-preview: State-of-the-art native image generation and editing model
- * - gemini-2.5-flash: Recommended model for light and fast content generation
+ * - gemini-3.5-flash: Recommended model for light and fast content and image generation
  */
 
 // Initialize client lazily to handle missing API keys gracefully at initialization
@@ -29,20 +28,20 @@ interface ImageGenerationResult {
 }
 
 /**
- * Generates a photorealistic studio rendering of a customized product using Gemini Nano Banana Pro
+ * Generates a photorealistic studio rendering of a customized product using Gemini 3.5 Flash
  */
 export async function generateVisualRender(
   prompt: string,
   options: ImageGenerationOptions = {}
 ): Promise<ImageGenerationResult> {
-  console.log(`[Gemini Service] Starting Nano Banana image generation with prompt: "${prompt.slice(0, 100)}..."`);
+  console.log(`[Gemini Service] Starting Gemini 3.5 Flash image generation with prompt: "${prompt.slice(0, 100)}..."`);
   
   try {
     const ai = getGenAIClient();
 
-    // Call the official unified SDK content generator using the state-of-the-art nano-banana model!
+    // Call the official unified SDK content generator using the fast gemini-3.5-flash model!
     const response = await ai.models.generateContent({
-      model: 'nano-banana-pro-preview',
+      model: 'gemini-3.5-flash',
       contents: prompt,
     });
 
@@ -50,7 +49,7 @@ export async function generateVisualRender(
     const base64Bytes = part?.inlineData?.data;
     
     if (base64Bytes) {
-      console.log('[Gemini Service] Nano Banana image successfully generated.');
+      console.log('[Gemini Service] Gemini 3.5 Flash image successfully generated.');
       return {
         success: true,
         imageBytes: base64Bytes, // returns base64 bytes directly
@@ -59,12 +58,12 @@ export async function generateVisualRender(
 
     return {
       success: false,
-      error: 'The Nano Banana model did not return any image data in the response parts.',
+      error: 'The Gemini 3.5 Flash model did not return any image data in the response parts.',
       code: 'EMPTY_RESPONSE',
     };
 
   } catch (error: any) {
-    console.error('[Gemini Service] Nano Banana Image Generation Failed:', error);
+    console.error('[Gemini Service] Gemini 3.5 Flash Image Generation Failed:', error);
     
     // Parse Google Gen AI API specific error responses
     const message = error.message || '';
@@ -106,14 +105,14 @@ export async function generateVisualRender(
 }
 
 /**
- * Analyzes configuration choices and generates a descriptive, tailored one-line rendering summary using Gemini 2.5 Flash
+ * Analyzes configuration choices and generates a descriptive, tailored one-line rendering summary using Gemini 3.5 Flash
  */
 export async function generateContentSummary(prompt: string): Promise<string | null> {
   try {
     const ai = getGenAIClient();
     
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.5-flash',
       contents: prompt,
     });
 
@@ -125,14 +124,14 @@ export async function generateContentSummary(prompt: string): Promise<string | n
 }
 
 /**
- * Parses and describes an uploaded brand asset (PNG/JPG) using Gemini 2.5 Flash Vision capabilities
+ * Parses and describes an uploaded brand asset (PNG/JPG) using Gemini 3.5 Flash Vision capabilities
  */
 export async function describeBrandAsset(base64Data: string, mimeType: string): Promise<string | null> {
   try {
     const ai = getGenAIClient();
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.5-flash',
       contents: [
         {
           text: "Describe this uploaded brand logo in detail. What are its exact shapes, icons, text, symbols, and primary colors? Keep it extremely brief, under 12 words, without intro remarks. E.g. 'a red circular target symbol' or 'a blue modern lowercase 'a' text icon'."

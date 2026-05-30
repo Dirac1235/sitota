@@ -142,7 +142,7 @@ export async function POST(request: Request) {
     if (apiKey) {
       console.log('[API Route] Live Gemini API Key detected. Triggering official SDK pipeline...');
 
-      // STEP 1: Describe logo using Gemini 2.5 Vision (only if a supported raster brand asset is provided)
+      // STEP 1: Describe logo using Gemini 3.5 Flash (only if a supported raster brand asset is provided)
       if (logoUrl && logoUrl.startsWith('data:')) {
         try {
           const parts = logoUrl.split(';base64,');
@@ -174,7 +174,7 @@ export async function POST(request: Request) {
         promptForAI = intentPrompt.split('|||JSON|||')[0].trim();
       }
 
-      // STEP 2: Generate text interpretation summary using Gemini 2.5 Flash
+      // STEP 2: Generate text interpretation summary using Gemini 3.5 Flash
       try {
         const summaryPrompt = `You are an AI brand design assistant for Sitota. 
         Write a single, concise one-line summary (maximum 15 words) describing the product rendering based on these settings.
@@ -197,7 +197,7 @@ export async function POST(request: Request) {
         console.error('[API Route] Summary generation exception:', summaryErr);
       }
 
-      // STEP 3: Generate customized photorealistic product render using Gemini Imagen 3 via unified SDK
+      // STEP 3: Generate customized photorealistic product render using Gemini 3.5 Flash via unified SDK
       const imageGenerationPrompt = `A ultra-premium high-end professional studio catalog product photograph of a customized branded ${itemName}.
       Specifications and elements: ${itemDescription}.
       The customized elements have the logo placed at the "${placementHint || 'Center'}".
@@ -218,7 +218,7 @@ export async function POST(request: Request) {
 
         if (imageResult.success && imageResult.imageBytes) {
           previewImageUrl = `data:image/jpeg;base64,${imageResult.imageBytes}`;
-          console.log('[API Route] Official Gemini SDK Imagen 3 render successfully generated.');
+          console.log('[API Route] Official Gemini SDK Gemini 3.5 Flash render successfully generated.');
         } else {
           console.warn('[API Route] Gemini SDK returned unsuccessful payload:', imageResult.error);
         }
