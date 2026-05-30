@@ -7,47 +7,54 @@ export default function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <nav className="bg-[#FDFBF7] sticky top-0 z-50 border-b border-[#1c1c1c]/10">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+    <nav className="bg-[#FAF6EE]/80 backdrop-blur-md sticky top-0 z-50 border-b border-[#8F9C86]/10 w-full transition-all duration-300">
+      <div className="w-full px-6 lg:px-12">
         <div className="flex justify-between items-center h-20">
-          <div className="flex items-center gap-12">
-            <Link href="/" className="flex-shrink-0">
-              <span className="font-serif text-3xl text-[#1c1c1c] tracking-tight">Sitota.</span>
+          
+          {/* Logo and Menu Links */}
+          <div className="flex-1 flex items-center">
+            <Link href="/" className="flex-shrink-0 group">
+              <span className="font-serif italic text-4xl text-[#1F2B1A] tracking-tight pr-8 border-r border-[#8F9C86]/20 group-hover:text-[#D27D5B] transition-colors duration-500">
+                Sitota.
+              </span>
             </Link>
-            <div className="hidden sm:flex space-x-8">
-              <Link href="/catalog" className="text-[11px] uppercase tracking-[0.2em] font-semibold text-[#1c1c1c]/60 hover:text-[#1c1c1c] transition-colors relative group py-2">
-                Curated Catalog
-                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#1c1c1c] transition-all duration-300 group-hover:w-full"></span>
+            <div className="hidden md:flex ml-8 space-x-8">
+              <Link href="/catalog" className="text-[10px] uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors relative group py-2">
+                Curated Collection
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#D27D5B] transition-all duration-300 group-hover:w-full rounded-full"></span>
               </Link>
             </div>
           </div>
-          <div className="hidden sm:flex items-center space-x-6">
+
+          {/* Right side controls */}
+          <div className="flex items-center space-x-4 md:space-x-8 h-full pl-6">
             {session ? (
-              <>
-                <Link href="/dashboard" className="text-[11px] uppercase tracking-[0.2em] font-semibold text-[#1c1c1c]/60 hover:text-[#1c1c1c] transition-colors">
-                  Dashboard
+              <div className="flex items-center h-full space-x-6 md:space-x-8">
+                <Link href="/dashboard" className="text-[10px] uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors">
+                  Workspace
                 </Link>
-                <span className="text-[11px] uppercase tracking-[0.15em] font-light text-[#1c1c1c]/50">
-                  Hello, {session.user?.name || session.user?.email}
+                <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#8F9C86] hidden sm:block">
+                  🌳 {session.user?.name || session.user?.email}
                 </span>
                 <button
                   onClick={() => signOut({ callbackUrl: '/' })}
-                  className="px-5 py-2.5 border border-[#1c1c1c]/20 text-[11px] uppercase tracking-[0.15em] font-semibold text-[#1c1c1c]/70 hover:border-[#1c1c1c] hover:text-[#1c1c1c] transition-all duration-300"
+                  className="px-6 py-2.5 bg-[#1F2B1A] text-[#FAF6EE] text-[9px] uppercase tracking-[0.2em] font-bold rounded-full hover:bg-[#D27D5B] transition-colors duration-300 shadow-sm"
                 >
-                  Sign Out
+                  Log Out
                 </button>
-              </>
+              </div>
             ) : (
-              <>
-                <Link href="/login" className="text-[11px] uppercase tracking-[0.2em] font-semibold text-[#1c1c1c]/60 hover:text-[#1c1c1c] transition-colors">
+              <div className="flex items-center space-x-4">
+                <Link href="/login" className="text-[10px] uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors py-2 px-4 rounded-full">
                   Login
                 </Link>
-                <Link href="/register" className="px-5 py-2.5 border border-[#1c1c1c] text-[11px] uppercase tracking-[0.15em] font-semibold text-[#1c1c1c] hover:bg-[#1c1c1c] hover:text-[#FDFBF7] transition-all duration-300">
+                <Link href="/register" className="px-6 py-3 bg-[#D27D5B] text-[#FAF6EE] text-[9px] uppercase tracking-[0.25em] font-bold rounded-full hover:bg-[#1F2B1A] transition-colors duration-300 shadow-sm">
                   Register
                 </Link>
-              </>
+              </div>
             )}
           </div>
+          
         </div>
       </div>
     </nav>

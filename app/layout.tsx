@@ -1,15 +1,24 @@
 import type { Metadata } from 'next';
-import { Playfair_Display, Lato } from 'next/font/google';
+import { Cormorant, Manrope } from 'next/font/google';
 import './globals.css';
 import Navbar from './components/Navbar';
 import SessionProvider from './components/SessionProvider';
 
-const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
-const lato = Lato({ weight: ['300', '400', '700'], subsets: ['latin'], variable: '--font-lato' });
+const cormorant = Cormorant({ 
+  weight: ['300', '400', '500', '600', '700'], 
+  subsets: ['latin'], 
+  variable: '--font-cormorant' 
+});
+
+const manrope = Manrope({ 
+  weight: ['200', '300', '400', '500', '600', '700', '800'], 
+  subsets: ['latin'], 
+  variable: '--font-manrope' 
+});
 
 export const metadata: Metadata = {
   title: 'Sitota | Corporate Gifting',
-  description: 'AI-powered luxury corporate gifting platform',
+  description: 'Unforgettable, personalized gifts and bespoke curated campaigns designed with botanical grace and warm elegance.',
 };
 
 export default function RootLayout({
@@ -18,39 +27,39 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${lato.variable}`}>
-      <body className="font-sans bg-[#FDFBF7] text-[#1c1c1c] min-h-screen flex flex-col selection:bg-[#B89871] selection:text-white">
+    <html lang="en" className={`${cormorant.variable} ${manrope.variable}`}>
+      <body className="font-sans bg-[#FAF6EE] text-[#1F2B1A] min-h-screen flex flex-col selection:bg-[#D27D5B] selection:text-[#FAF6EE] noise-bg">
         <SessionProvider>
           <Navbar />
           <main className="flex-grow">
             {children}
           </main>
         </SessionProvider>
-        <footer className="bg-[#111] text-white/70 py-16 mt-auto">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div>
-              <span className="font-serif text-2xl text-white block mb-4">Sitota</span>
-              <p className="text-sm font-light max-w-xs leading-relaxed">
-                Elevating corporate relationships through curated, personalized gifting experiences powered by AI.
+        <footer className="bg-[#1F2B1A] text-[#FAF6EE] border-t border-[#8F9C86]/20 py-16 mt-auto">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-[#FAF6EE]/10 pb-16">
+            <div className="col-span-1 md:col-span-2 space-y-4">
+              <span className="font-serif italic text-5xl block text-[#FAF6EE]">Sitota.</span>
+              <p className="font-sans text-[11px] uppercase tracking-widest leading-loose max-w-sm opacity-60">
+                Nurturing corporate relationships through beautifully crafted, natural, and personalized gifting experiences.
               </p>
             </div>
-            <div className="text-sm font-light space-y-2">
-              <p className="uppercase tracking-widest text-xs text-white/50 mb-4 font-semibold">Platform</p>
-              <p className="hover:text-white cursor-pointer transition-colors">Catalog</p>
-              <p className="hover:text-white cursor-pointer transition-colors">Bundles</p>
-              <p className="hover:text-white cursor-pointer transition-colors">How it works</p>
+            <div className="font-sans text-[10px] uppercase tracking-widest space-y-4">
+              <p className="text-[#D27D5B] font-bold mb-6">Platform</p>
+              <p className="hover:text-[#D27D5B] cursor-pointer transition-colors duration-300">Curated Index</p>
+              <p className="hover:text-[#D27D5B] cursor-pointer transition-colors duration-300">Natural Bundles</p>
+              <p className="hover:text-[#D27D5B] cursor-pointer transition-colors duration-300">Bespoke Design</p>
             </div>
-            <div className="text-sm font-light space-y-2">
-              <p className="uppercase tracking-widest text-xs text-white/50 mb-4 font-semibold">Contact</p>
-              <p>hello@sitota.com</p>
-              <p>+1 (800) 123-4567</p>
+            <div className="font-sans text-[10px] uppercase tracking-widest space-y-4">
+              <p className="text-[#D27D5B] font-bold mb-6">Connect</p>
+              <p className="hover:text-[#D27D5B] cursor-pointer transition-colors duration-300">studio@sitota.com</p>
+              <p className="hover:text-[#D27D5B] cursor-pointer transition-colors duration-300">+1 (800) 123-4567</p>
             </div>
           </div>
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-16 mt-16 border-t border-white/10 text-xs tracking-wider flex justify-between">
-            <p>&copy; {new Date().getFullYear()} Sitota. All rights reserved.</p>
-            <div className="space-x-6">
-              <span className="hover:text-white cursor-pointer">Privacy</span>
-              <span className="hover:text-white cursor-pointer">Terms</span>
+          <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-8 flex flex-col md:flex-row justify-between items-center text-[9px] uppercase tracking-widest opacity-50">
+            <p>&copy; {new Date().getFullYear()} Sitota. Crafted with botanical grace.</p>
+            <div className="space-x-8 mt-4 md:mt-0">
+              <span className="hover:text-[#D27D5B] cursor-pointer transition-colors">Privacy Charter</span>
+              <span className="hover:text-[#D27D5B] cursor-pointer transition-colors">Terms of Harmony</span>
             </div>
           </div>
         </footer>

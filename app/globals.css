@@ -1,29 +1,100 @@
 @import "tailwindcss";
 
 @theme {
-  --font-serif: var(--font-playfair);
-  --font-sans: var(--font-lato);
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-manrope);
+  
+  --color-sitota-bg: #FAF6EE;
+  --color-sitota-fg: #1F2B1A;
+  --color-sitota-accent: #D27D5B;
+  --color-sitota-sage: #8F9C86;
+  --color-sitota-moss: #2C3625;
+  --color-sitota-cream: #F5F1E6;
 }
 
 @layer base {
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
+    font-weight: 400;
   }
   
   body {
     font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-.luxury-gradient {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+/* Botanical Organic Warmth Utility Classes */
+.noise-bg {
+  position: relative;
 }
 
-.glass-panel {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+.noise-bg::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  /* Extremely soft organic linen / paper fiber noise overlay */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  z-index: 9999;
+}
+
+.reveal-text {
+  animation: slideUpFade 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.reveal-delay-1 { animation-delay: 0.15s; }
+.reveal-delay-2 { animation-delay: 0.3s; }
+.reveal-delay-3 { animation-delay: 0.45s; }
+.reveal-delay-4 { animation-delay: 0.6s; }
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth organic progress loader */
+@keyframes bloomReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-bloom {
+  animation: bloomReveal 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Hide scrollbar for cleaner look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF6EE;
+}
+::-webkit-scrollbar-thumb {
+  background: #8F9C86;
+  border-radius: 99px;
+  border: 2px solid #FAF6EE;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1F2B1A;
 }
 
 .text-balance {

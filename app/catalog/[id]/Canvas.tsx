@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { Upload, Sparkles, Image as ImageIcon, Download, Check } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -12,6 +11,7 @@ interface Product {
   category: string;
   description: string | null;
   basePrice: number;
+  sku: string;
   images: any;
 }
 
@@ -74,74 +74,93 @@ export default function Canvas({ product }: { product: Product }) {
   const baseImageUrl = parsedImages[0] || 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&q=80&w=600';
 
   return (
-    <div className="max-w-7xl mx-auto px-6 lg:px-12 py-12">
-      <div className="mb-10">
-        <Link href="/catalog" className="text-xs uppercase tracking-[0.2em] font-semibold text-[#1c1c1c]/50 hover:text-[#1c1c1c] transition-colors">
-          &larr; Back to Curated Catalog
+    <div className="w-full flex flex-col min-h-screen animate-bloom">
+      
+      {/* Top Header */}
+      <div className="w-full border-b border-[#8F9C86]/10 flex justify-between items-center p-5 lg:px-12 bg-[#FAF6EE]">
+        <Link href="/catalog" className="text-[10px] uppercase tracking-[0.25em] font-bold text-[#1F2B1A] hover:text-[#D27D5B] transition-colors flex items-center gap-2">
+          &larr; Return to Index
         </Link>
+        <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/40">
+          Studio Workstation / {product.sku}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-        {/* Left Panel - Customization Controls */}
-        <div className="space-y-8">
-          <div>
-            <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#8B7355] block mb-2">{product.category}</span>
-            <h1 className="font-serif text-3xl md:text-4xl text-[#1c1c1c] mb-4">{product.name}</h1>
-            <p className="text-sm font-light text-[#1c1c1c]/70 leading-relaxed mb-6">{product.description}</p>
-            <p className="font-serif text-xl font-light text-[#1c1c1c]">${product.basePrice.toFixed(2)}</p>
+      {/* Main Split Layout */}
+      <div className="flex flex-col lg:flex-row flex-grow w-full items-stretch">
+        
+        {/* Left Panel - Inputs (Form) */}
+        <div className="w-full lg:w-[45%] flex flex-col border-b lg:border-b-0 lg:border-r border-[#8F9C86]/15 bg-[#FAF6EE]">
+          
+          {/* Product Info Section */}
+          <div className="p-8 lg:p-12 border-b border-[#8F9C86]/15 bg-[#F5F1E6]/20">
+            <span className="inline-block text-[8px] uppercase tracking-[0.2em] text-[#D27D5B] font-bold bg-[#D27D5B]/10 px-3 py-1 rounded-full mb-4">
+              {product.category} — {product.sku}
+            </span>
+            <h1 className="font-serif text-4xl lg:text-5xl text-[#1F2B1A] mb-4 uppercase tracking-tight leading-none">
+              {product.name}
+            </h1>
+            <p className="text-[12px] font-sans text-[#1F2B1A]/70 uppercase tracking-widest leading-[2.2] mb-8">
+              {product.description}
+            </p>
+            <div className="flex justify-between items-end border-t border-[#8F9C86]/15 pt-6">
+              <span className="text-[9px] uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/50">Unit Value</span>
+              <span className="font-serif text-3xl font-bold text-[#1F2B1A]">${product.basePrice.toFixed(2)}</span>
+            </div>
           </div>
 
-          <div className="border-t border-[#1c1c1c]/10 pt-8 space-y-6">
-            {/* Intent & Preference Prompt */}
-            <div className="bg-[#FAF8F5] p-6 border border-[#1c1c1c]/5">
-              <div className="flex justify-between items-center mb-4">
-                <label className="text-[11px] uppercase tracking-[0.15em] font-bold text-[#1c1c1c] flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-[#8B7355]" /> Describe your vision
-                </label>
-                <button 
-                  onClick={() => setPrompt("I want our logo beautifully centered in copper/gold text on the dark navy backdrop. Minimalist and luxury-focused.")}
-                  className="text-[10px] uppercase tracking-wider text-[#8B7355] hover:text-[#1c1c1c] transition-colors font-semibold"
-                >
-                  Inspire me
-                </button>
+          {/* Configuration Form */}
+          <div className="p-8 lg:p-12 flex-grow flex flex-col gap-8 bg-[#FAF6EE]">
+            
+            {/* Intent Prompt */}
+            <div className="relative border border-[#8F9C86]/25 rounded-2xl bg-[#F5F1E6]/30 overflow-hidden group focus-within:border-[#D27D5B]/70 transition-colors">
+              <div className="absolute top-3 left-4 text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50">
+                Creative Directive (Prompt)
               </div>
               <textarea
-                className="w-full h-24 p-4 border border-[#1c1c1c]/10 rounded-none bg-white text-sm focus:outline-none focus:border-[#1c1c1c] transition-colors"
-                placeholder="Tell us what you have in mind — e.g., 'Logo centered on front, tagline below it in gold...'"
+                className="w-full h-32 pt-8 px-4 pb-3 bg-transparent text-[11px] font-sans uppercase tracking-widest leading-[2] text-[#1F2B1A] focus:outline-none resize-none placeholder:text-[#1F2B1A]/30"
+                placeholder="DEFINE YOUR VISION. E.G., 'A SEEDLING MOTIF CENTERED ON BACK WITH TERRASCOTTA TEXT.'"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
               />
-              <div className="mt-3 flex justify-between items-center text-[10px] text-[#1c1c1c]/40 font-semibold uppercase tracking-wider">
-                <span>Clarity: <span className="text-green-600 font-bold">● Detailed</span></span>
-                <span>{prompt.length}/500</span>
+              <div className="border-t border-[#8F9C86]/15 flex justify-between items-center px-4 py-2.5 bg-[#F5F1E6]/40">
+                <button 
+                  onClick={() => setPrompt("Botanical luxury. Soft olive branch crest centered elegantly in terracotta tones.")}
+                  className="text-[8px] uppercase tracking-[0.25em] font-bold text-[#D27D5B] hover:text-[#1F2B1A] transition-colors"
+                >
+                  🍃 Suggest Direction
+                </button>
+                <span className="text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/40">
+                  {prompt.length}/500
+                </span>
               </div>
             </div>
 
-            {/* Structured Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="border border-dashed border-[#1c1c1c]/20 hover:border-[#1c1c1c] transition-colors p-6 flex flex-col items-center justify-center text-center cursor-pointer bg-gray-50/50">
-                <Upload className="w-6 h-6 text-[#1c1c1c]/40 mb-3" />
-                <span className="text-xs uppercase tracking-wider font-semibold text-[#1c1c1c]">Upload Brand Logo</span>
-                <span className="text-[9px] text-[#1c1c1c]/40 mt-1 uppercase tracking-wider font-semibold">PNG, SVG up to 10MB</span>
-              </div>
+            {/* Asset Upload & Text Lines Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-[10px] uppercase tracking-[0.15em] font-semibold text-[#1c1c1c]/60 mb-2">Text Line 1</label>
+              <div className="relative border border-dashed border-[#8F9C86]/40 rounded-2xl bg-[#FAF9F5]/40 flex flex-col justify-center items-center p-6 cursor-pointer hover:bg-[#1F2B1A] hover:text-[#FAF6EE] transition-all duration-500 group shadow-sm">
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A] group-hover:text-[#FAF6EE] mb-2">Upload Asset</span>
+                <span className="text-[8px] uppercase tracking-widest text-[#1F2B1A]/50 group-hover:text-[#FAF6EE]/70 font-bold">SVG / PNG / 10MB</span>
+              </div>
+
+              <div className="flex flex-col gap-6">
+                <div className="relative border-b border-[#8F9C86]/20 pb-1 group focus-within:border-[#D27D5B]">
+                  <label className="block text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Line 01 (Primary)</label>
                   <input
                     type="text"
-                    placeholder="E.g., Company Name"
-                    className="w-full px-4 py-3 border border-[#1c1c1c]/10 rounded-none text-sm focus:outline-none focus:border-[#1c1c1c] bg-white transition-colors"
+                    className="w-full bg-transparent text-[11px] font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                    placeholder="CREST INSCRIPTION"
                     value={textLine1}
                     onChange={(e) => setTextLine1(e.target.value)}
                   />
                 </div>
-                <div>
-                  <label className="block text-[10px] uppercase tracking-[0.15em] font-semibold text-[#1c1c1c]/60 mb-2">Text Line 2 (Optional)</label>
+                <div className="relative border-b border-[#8F9C86]/20 pb-1 group focus-within:border-[#D27D5B]">
+                  <label className="block text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Line 02 (Secondary)</label>
                   <input
                     type="text"
-                    placeholder="E.g., Tagline"
-                    className="w-full px-4 py-3 border border-[#1c1c1c]/10 rounded-none text-sm focus:outline-none focus:border-[#1c1c1c] bg-white transition-colors"
+                    className="w-full bg-transparent text-[11px] font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                    placeholder="TAGLINE OR DATE"
                     value={textLine2}
                     onChange={(e) => setTextLine2(e.target.value)}
                   />
@@ -149,68 +168,79 @@ export default function Canvas({ product }: { product: Product }) {
               </div>
             </div>
 
-            <div>
-              <label className="block text-[10px] uppercase tracking-[0.15em] font-semibold text-[#1c1c1c]/60 mb-2">Gift message</label>
-              <textarea
-                className="w-full h-16 p-4 border border-[#1c1c1c]/10 rounded-none bg-white text-sm focus:outline-none focus:border-[#1c1c1c] transition-colors"
-                placeholder="Included inside the packaging insert note..."
-                value={giftMessage}
-                onChange={(e) => setGiftMessage(e.target.value)}
-              />
-            </div>
-
+            {/* Generate Button */}
             <button
               onClick={handleGenerate}
               disabled={isGenerating}
-              className="w-full py-4 bg-[#1c1c1c] text-[#FDFBF7] text-xs tracking-[0.2em] uppercase font-semibold hover:bg-[#333] transition-colors duration-500 disabled:opacity-50"
+              className="w-full py-5 bg-[#D27D5B] text-[#FAF6EE] text-[9px] tracking-[0.3em] uppercase font-bold rounded-full hover:bg-[#1F2B1A] transition-colors duration-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
             >
-              {isGenerating ? 'Generating Luxury Render...' : 'Generate Preview'}
+              {isGenerating ? 'Rendering Custom Asset...' : 'Execute Rendering'}
             </button>
+            
           </div>
         </div>
 
-        {/* Right Panel - Render Preview */}
-        <div className="flex flex-col h-full justify-start">
-          <div className="aspect-[4/5] w-full bg-[#f0eee9] border border-[#1c1c1c]/10 flex flex-col items-center justify-center p-8 relative overflow-hidden">
+        {/* Right Panel - Render Preview (The Moss-Forest Chamber) */}
+        <div className="w-full lg:w-[55%] bg-[#1F2B1A] relative flex flex-col justify-center items-center p-6 lg:p-16 overflow-hidden">
+          
+          {/* Glowing amber/gold soft organic grid background */}
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(210,125,91,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(210,125,91,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+
+          <div className="relative w-full max-w-2xl aspect-square border border-[#8F9C86]/15 bg-[#FAF6EE] p-6 lg:p-12 rounded-[2rem] shadow-2xl flex flex-col">
             {!previewGenerated ? (
-              <div className="text-center max-w-xs space-y-4">
-                <ImageIcon className="w-12 h-12 mx-auto text-[#1c1c1c]/30 stroke-[1.2]" />
-                <h3 className="font-serif text-lg text-[#1c1c1c]">Visual Studio</h3>
-                <p className="text-xs text-[#1c1c1c]/50 leading-relaxed font-light">
-                  Input your branding specifications, and our AI design engine will synthesize your concepts photorealistically.
-                </p>
+              <div className="w-full h-full border border-[#1F2B1A]/5 rounded-[1.5rem] flex flex-col items-center justify-center relative bg-[#F5F1E6]/40">
+                 <div className="absolute inset-0 flex items-center justify-center opacity-3 pointer-events-none">
+                   <span className="font-serif italic text-[11rem] text-[#1F2B1A]">s.</span>
+                 </div>
+                 <div className="text-center z-10 space-y-4 px-6">
+                   <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#1F2B1A]">
+                      Chamber Viewport
+                   </div>
+                   <div className="text-[9px] uppercase tracking-widest text-[#1F2B1A]/60 max-w-xs mx-auto leading-[2] font-semibold">
+                     Awaiting parameter inputs to organize custom botanical proof.
+                   </div>
+                 </div>
               </div>
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center relative">
+              <div className="w-full h-full flex flex-col relative group rounded-[1.5rem] overflow-hidden">
                 <img
                   src={previewUrl}
-                  alt="AI concept render"
-                  className="w-full h-full object-cover transition-all duration-700"
+                  alt="Custom render"
+                  className="w-full h-full object-cover transition-all duration-[2s] ease-out filter sepia-[0.03]"
                 />
-                <div className="absolute inset-x-0 bottom-0 bg-[#FDFBF7]/90 p-6 border-t border-[#1c1c1c]/5">
-                  <p className="text-xs font-light text-[#1c1c1c]/70 text-center leading-relaxed">
-                    <span className="font-bold uppercase tracking-wider text-[9px] block text-[#8B7355] mb-1">AI Render Output</span>
-                    {interpretation}
-                  </p>
+                
+                {/* Proof overlay */}
+                <div className="absolute bottom-0 left-0 right-0 bg-[#FAF6EE] border-t border-[#8F9C86]/10 p-5 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                  <div className="flex items-center gap-4">
+                     <span className="w-2.5 h-2.5 bg-[#D27D5B] rounded-full animate-pulse"></span>
+                     <div>
+                       <span className="text-[7px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 block mb-1">Rendering Logs</span>
+                       <span className="text-[9px] uppercase tracking-widest text-[#1F2B1A] leading-snug block font-bold">
+                         {interpretation}
+                       </span>
+                     </div>
+                  </div>
                 </div>
               </div>
             )}
           </div>
           
           {previewGenerated && (
-            <div className="mt-8 flex gap-4 justify-end">
-              <button className="flex items-center gap-2 px-6 py-3 border border-[#1c1c1c]/20 text-[11px] uppercase tracking-wider font-semibold text-[#1c1c1c]/70 hover:border-[#1c1c1c] hover:text-[#1c1c1c] transition-all">
-                <Download className="w-4 h-4" /> Save Proof
+            <div className="mt-12 flex w-full max-w-2xl gap-4 relative z-10">
+              <button className="flex-1 py-4.5 border border-[#FAF6EE]/20 text-[#FAF6EE] text-[9px] tracking-[0.25em] uppercase font-bold rounded-full hover:bg-[#FAF6EE] hover:text-[#1F2B1A] transition-colors duration-300">
+                Download Proof
               </button>
               <button 
                 onClick={handleApprove}
-                className="flex items-center gap-2 px-8 py-3 bg-[#1c1c1c] text-white text-[11px] uppercase tracking-wider font-semibold hover:bg-[#333] transition-colors"
+                className="flex-1 py-4.5 bg-[#D27D5B] text-[#FAF6EE] text-[9px] tracking-[0.25em] uppercase font-bold rounded-full hover:bg-[#FAF6EE] hover:text-[#1F2B1A] transition-colors duration-300 shadow-md"
               >
-                <Check className="w-4 h-4" /> Approve Proof
+                Approve & Continue
               </button>
             </div>
           )}
+          
         </div>
+
       </div>
     </div>
   );
