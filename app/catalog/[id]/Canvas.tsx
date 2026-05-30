@@ -24,11 +24,25 @@ export default function Canvas({ product }: { product: Product }) {
   const [giftMessage, setGiftMessage] = useState('');
   const [placementHint, setPlacementHint] = useState('Center');
   const [textColor, setTextColor] = useState('Auto');
+  const [fontStyleHint, setFontStyleHint] = useState('Auto');
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [previewGenerated, setPreviewGenerated] = useState(false);
   const [previewUrl, setPreviewUrl] = useState('');
   const [interpretation, setInterpretation] = useState('');
   const [designId, setDesignId] = useState('');
+  const [logoUrl, setLogoUrl] = useState('');
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setLogoUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleGenerate = async () => {
     setIsGenerating(true);
@@ -41,11 +55,13 @@ export default function Canvas({ product }: { product: Product }) {
         body: JSON.stringify({
           productId: product.id,
           intentPrompt: prompt,
+          logoUrl, // Pass base64 uploaded logo to backend
           textLine1,
           textLine2,
           giftMessage,
           placementHint,
           textColor,
+          fontStyleHint, // Pass font style to backend
         }),
       });
       const data = await res.json();
@@ -78,10 +94,10 @@ export default function Canvas({ product }: { product: Product }) {
       
       {/* Top Header */}
       <div className="w-full border-b border-[#8F9C86]/10 flex justify-between items-center p-5 lg:px-12 bg-[#FAF6EE]">
-        <Link href="/catalog" className="text-[10px] uppercase tracking-[0.25em] font-bold text-[#1F2B1A] hover:text-[#D27D5B] transition-colors flex items-center gap-2">
+        <Link href="/catalog" className="text-xs uppercase tracking-[0.25em] font-bold text-[#1F2B1A] hover:text-[#D27D5B] transition-colors flex items-center gap-2">
           &larr; Return to Index
         </Link>
-        <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/40">
+        <div className="text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/40">
           Studio Workstation / {product.sku}
         </div>
       </div>
@@ -94,17 +110,17 @@ export default function Canvas({ product }: { product: Product }) {
           
           {/* Product Info Section */}
           <div className="p-8 lg:p-12 border-b border-[#8F9C86]/15 bg-[#F5F1E6]/20">
-            <span className="inline-block text-[8px] uppercase tracking-[0.2em] text-[#D27D5B] font-bold bg-[#D27D5B]/10 px-3 py-1 rounded-full mb-4">
+            <span className="inline-block text-xs uppercase tracking-[0.2em] text-[#D27D5B] font-bold bg-[#D27D5B]/10 px-3.5 py-1.5 rounded-full mb-4">
               {product.category} — {product.sku}
             </span>
             <h1 className="font-serif text-4xl lg:text-5xl text-[#1F2B1A] mb-4 uppercase tracking-tight leading-none">
               {product.name}
             </h1>
-            <p className="text-[12px] font-sans text-[#1F2B1A]/70 uppercase tracking-widest leading-[2.2] mb-8">
+            <p className="text-sm font-sans text-[#1F2B1A]/70 uppercase tracking-widest leading-[2.2] mb-8">
               {product.description}
             </p>
             <div className="flex justify-between items-end border-t border-[#8F9C86]/15 pt-6">
-              <span className="text-[9px] uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/50">Unit Value</span>
+              <span className="text-xs uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/50">Unit Value</span>
               <span className="font-serif text-3xl font-bold text-[#1F2B1A]">${product.basePrice.toFixed(2)}</span>
             </div>
           </div>
@@ -114,11 +130,11 @@ export default function Canvas({ product }: { product: Product }) {
             
             {/* Intent Prompt */}
             <div className="relative border border-[#8F9C86]/25 rounded-2xl bg-[#F5F1E6]/30 overflow-hidden group focus-within:border-[#D27D5B]/70 transition-colors">
-              <div className="absolute top-3 left-4 text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50">
+              <div className="absolute top-3 left-4 text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50">
                 Creative Directive (Prompt)
               </div>
               <textarea
-                className="w-full h-32 pt-8 px-4 pb-3 bg-transparent text-[11px] font-sans uppercase tracking-widest leading-[2] text-[#1F2B1A] focus:outline-none resize-none placeholder:text-[#1F2B1A]/30"
+                className="w-full h-32 pt-9 px-4 pb-3 bg-transparent text-xs font-sans uppercase tracking-widest leading-[2] text-[#1F2B1A] focus:outline-none resize-none placeholder:text-[#1F2B1A]/30"
                 placeholder="DEFINE YOUR VISION. E.G., 'A SEEDLING MOTIF CENTERED ON BACK WITH TERRASCOTTA TEXT.'"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
@@ -126,11 +142,11 @@ export default function Canvas({ product }: { product: Product }) {
               <div className="border-t border-[#8F9C86]/15 flex justify-between items-center px-4 py-2.5 bg-[#F5F1E6]/40">
                 <button 
                   onClick={() => setPrompt("Botanical luxury. Soft olive branch crest centered elegantly in terracotta tones.")}
-                  className="text-[8px] uppercase tracking-[0.25em] font-bold text-[#D27D5B] hover:text-[#1F2B1A] transition-colors"
+                  className="text-xs uppercase tracking-[0.25em] font-bold text-[#D27D5B] hover:text-[#1F2B1A] transition-colors"
                 >
                   🍃 Suggest Direction
                 </button>
-                <span className="text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/40">
+                <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/40">
                   {prompt.length}/500
                 </span>
               </div>
@@ -139,27 +155,46 @@ export default function Canvas({ product }: { product: Product }) {
             {/* Asset Upload & Text Lines Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               
-              <div className="relative border border-dashed border-[#8F9C86]/40 rounded-2xl bg-[#FAF9F5]/40 flex flex-col justify-center items-center p-6 cursor-pointer hover:bg-[#1F2B1A] hover:text-[#FAF6EE] transition-all duration-500 group shadow-sm">
-                <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A] group-hover:text-[#FAF6EE] mb-2">Upload Asset</span>
-                <span className="text-[8px] uppercase tracking-widest text-[#1F2B1A]/50 group-hover:text-[#FAF6EE]/70 font-bold">SVG / PNG / 10MB</span>
-              </div>
+              <label 
+                htmlFor="logo-upload"
+                className="relative border border-dashed border-[#8F9C86]/40 rounded-2xl bg-[#FAF9F5]/40 flex flex-col justify-center items-center p-6 cursor-pointer hover:bg-[#1F2B1A] hover:text-[#FAF6EE] transition-all duration-500 group shadow-sm text-center"
+              >
+                <input 
+                  type="file" 
+                  id="logo-upload" 
+                  accept="image/*" 
+                  className="hidden" 
+                  onChange={handleLogoUpload} 
+                />
+                {logoUrl ? (
+                  <div className="flex flex-col items-center">
+                    <img src={logoUrl} alt="Logo thumbnail" className="w-12 h-12 object-contain mb-2 grayscale" />
+                    <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A] group-hover:text-[#FAF6EE]">Replace Asset</span>
+                  </div>
+                ) : (
+                  <>
+                    <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A] group-hover:text-[#FAF6EE] mb-2">Upload Logo</span>
+                    <span className="text-xs uppercase tracking-widest text-[#1F2B1A]/50 group-hover:text-[#FAF6EE]/70 font-bold">SVG / PNG / 10MB</span>
+                  </>
+                )}
+              </label>
 
               <div className="flex flex-col gap-6">
                 <div className="relative border-b border-[#8F9C86]/20 pb-1 group focus-within:border-[#D27D5B]">
-                  <label className="block text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Line 01 (Primary)</label>
+                  <label className="block text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Line 01 (Primary)</label>
                   <input
                     type="text"
-                    className="w-full bg-transparent text-[11px] font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                    className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
                     placeholder="CREST INSCRIPTION"
                     value={textLine1}
                     onChange={(e) => setTextLine1(e.target.value)}
                   />
                 </div>
                 <div className="relative border-b border-[#8F9C86]/20 pb-1 group focus-within:border-[#D27D5B]">
-                  <label className="block text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Line 02 (Secondary)</label>
+                  <label className="block text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Line 02 (Secondary)</label>
                   <input
                     type="text"
-                    className="w-full bg-transparent text-[11px] font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                    className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
                     placeholder="TAGLINE OR DATE"
                     value={textLine2}
                     onChange={(e) => setTextLine2(e.target.value)}
@@ -168,11 +203,72 @@ export default function Canvas({ product }: { product: Product }) {
               </div>
             </div>
 
+            {/* Advanced Options Toggle */}
+            <div className="border-t border-[#8F9C86]/10 pt-4">
+              <button
+                type="button"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/60 hover:text-[#D27D5B] transition-colors flex items-center gap-1.5 focus:outline-none"
+              >
+                {showAdvanced ? '▼ Hide Advanced Options' : '▶ Show Advanced Options'}
+              </button>
+              
+              {showAdvanced && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 animate-fade-in pb-2">
+                  <div className="relative border-b border-[#8F9C86]/20 pb-1">
+                    <label className="block text-[9px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Logo Placement</label>
+                    <select
+                      className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none cursor-pointer"
+                      value={placementHint}
+                      onChange={(e) => setPlacementHint(e.target.value)}
+                    >
+                      <option value="Center">Center</option>
+                      <option value="Left Chest">Left Chest</option>
+                      <option value="Right Chest">Right Chest</option>
+                      <option value="Sleeve">Sleeve</option>
+                      <option value="Back">Back</option>
+                    </select>
+                  </div>
+
+                  <div className="relative border-b border-[#8F9C86]/20 pb-1">
+                    <label className="block text-[9px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Text Color</label>
+                    <select
+                      className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none cursor-pointer"
+                      value={textColor}
+                      onChange={(e) => setTextColor(e.target.value)}
+                    >
+                      <option value="Auto">Auto (Contrast)</option>
+                      <option value="Gold">Metallic Gold</option>
+                      <option value="Silver">Metallic Silver</option>
+                      <option value="White">Matte White</option>
+                      <option value="Black">Matte Black</option>
+                      <option value="Terracotta">Terracotta</option>
+                    </select>
+                  </div>
+
+                  <div className="relative border-b border-[#8F9C86]/20 pb-1">
+                    <label className="block text-[9px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Font Style</label>
+                    <select
+                      className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none cursor-pointer"
+                      value={fontStyleHint}
+                      onChange={(e) => setFontStyleHint(e.target.value)}
+                    >
+                      <option value="Auto">Auto</option>
+                      <option value="Serif">Serif (Classic)</option>
+                      <option value="Sans-serif">Sans-serif (Modern)</option>
+                      <option value="Script">Script (Elegant)</option>
+                      <option value="Bold Display">Bold Display</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Generate Button */}
             <button
               onClick={handleGenerate}
               disabled={isGenerating}
-              className="w-full py-5 bg-[#D27D5B] text-[#FAF6EE] text-[9px] tracking-[0.3em] uppercase font-bold rounded-full hover:bg-[#1F2B1A] transition-colors duration-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+              className="w-full py-5 bg-[#D27D5B] text-[#FAF6EE] text-xs tracking-[0.3em] uppercase font-bold rounded-full hover:bg-[#1F2B1A] transition-colors duration-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
             >
               {isGenerating ? 'Rendering Custom Asset...' : 'Execute Rendering'}
             </button>
@@ -180,7 +276,7 @@ export default function Canvas({ product }: { product: Product }) {
           </div>
         </div>
 
-        {/* Right Panel - Render Preview (The Moss-Forest Chamber) */}
+        {/* Right Panel - Render Preview */}
         <div className="w-full lg:w-[55%] bg-[#1F2B1A] relative flex flex-col justify-center items-center p-6 lg:p-16 overflow-hidden">
           
           {/* Glowing amber/gold soft organic grid background */}
@@ -193,10 +289,10 @@ export default function Canvas({ product }: { product: Product }) {
                    <span className="font-serif italic text-[11rem] text-[#1F2B1A]">s.</span>
                  </div>
                  <div className="text-center z-10 space-y-4 px-6">
-                   <div className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#1F2B1A]">
+                   <div className="text-xs uppercase tracking-[0.3em] font-bold text-[#1F2B1A]">
                       Chamber Viewport
                    </div>
-                   <div className="text-[9px] uppercase tracking-widest text-[#1F2B1A]/60 max-w-xs mx-auto leading-[2] font-semibold">
+                   <div className="text-xs uppercase tracking-widest text-[#1F2B1A]/60 max-w-xs mx-auto leading-[2] font-semibold">
                      Awaiting parameter inputs to organize custom botanical proof.
                    </div>
                  </div>
@@ -214,8 +310,8 @@ export default function Canvas({ product }: { product: Product }) {
                   <div className="flex items-center gap-4">
                      <span className="w-2.5 h-2.5 bg-[#D27D5B] rounded-full animate-pulse"></span>
                      <div>
-                       <span className="text-[7px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 block mb-1">Rendering Logs</span>
-                       <span className="text-[9px] uppercase tracking-widest text-[#1F2B1A] leading-snug block font-bold">
+                       <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 block mb-1">Rendering Logs</span>
+                       <span className="text-xs uppercase tracking-widest text-[#1F2B1A] leading-snug block font-bold">
                          {interpretation}
                        </span>
                      </div>
@@ -227,12 +323,12 @@ export default function Canvas({ product }: { product: Product }) {
           
           {previewGenerated && (
             <div className="mt-12 flex w-full max-w-2xl gap-4 relative z-10">
-              <button className="flex-1 py-4.5 border border-[#FAF6EE]/20 text-[#FAF6EE] text-[9px] tracking-[0.25em] uppercase font-bold rounded-full hover:bg-[#FAF6EE] hover:text-[#1F2B1A] transition-colors duration-300">
+              <button className="flex-1 py-4.5 border border-[#FAF6EE]/20 text-[#FAF6EE] text-xs tracking-[0.25em] uppercase font-bold rounded-full hover:bg-[#FAF6EE] hover:text-[#1F2B1A] transition-colors duration-300">
                 Download Proof
               </button>
               <button 
                 onClick={handleApprove}
-                className="flex-1 py-4.5 bg-[#D27D5B] text-[#FAF6EE] text-[9px] tracking-[0.25em] uppercase font-bold rounded-full hover:bg-[#FAF6EE] hover:text-[#1F2B1A] transition-colors duration-300 shadow-md"
+                className="flex-1 py-4.5 bg-[#D27D5B] text-[#FAF6EE] text-xs tracking-[0.25em] uppercase font-bold rounded-full hover:bg-[#FAF6EE] hover:text-[#1F2B1A] transition-colors duration-300 shadow-md"
               >
                 Approve & Continue
               </button>

@@ -134,7 +134,7 @@ function CheckoutForm() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#FAF6EE]">
-        <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#1F2B1A] animate-pulse">Initializing Checkout Studio...</span>
+        <span className="text-xs uppercase tracking-[0.3em] font-bold text-[#1F2B1A] animate-pulse">Initializing Checkout Studio...</span>
       </div>
     );
   }
@@ -156,17 +156,17 @@ function CheckoutForm() {
               <Check className="w-6 h-6 stroke-[2.5]" />
             </div>
             <div className="space-y-3">
-              <span className="inline-block text-[8px] uppercase tracking-[0.25em] font-bold text-[#D27D5B] bg-[#D27D5B]/10 px-3 py-1 rounded-full">
+              <span className="inline-block text-xs uppercase tracking-[0.25em] font-bold text-[#D27D5B] bg-[#D27D5B]/10 px-3 py-1.5 rounded-full">
                 TRANSACTION SECURED
               </span>
               <h3 className="font-serif text-3xl text-[#1F2B1A] uppercase tracking-tight leading-none">Campaign Registered</h3>
-              <p className="text-[11px] font-sans text-[#1F2B1A]/70 uppercase tracking-widest leading-[2.2] mt-4 max-w-sm mx-auto font-medium">
+              <p className="text-xs md:text-sm font-sans text-[#1F2B1A]/70 uppercase tracking-widest leading-[2.2] mt-4 max-w-sm mx-auto font-medium">
                 Your customized gifting parameters have been verified and recorded. Recipients will be gracefully notified shortly.
               </p>
             </div>
             <button
               onClick={() => router.push('/dashboard')}
-              className="w-full py-4.5 bg-[#1F2B1A] text-[#FAF6EE] text-[9px] tracking-[0.3em] uppercase font-bold rounded-full hover:bg-[#D27D5B] transition-colors duration-500 shadow-md"
+              className="w-full py-4.5 bg-[#1F2B1A] text-[#FAF6EE] text-xs tracking-[0.3em] uppercase font-bold rounded-full hover:bg-[#D27D5B] transition-colors duration-500 shadow-md"
             >
               Enter Client Portal
             </button>
@@ -177,16 +177,16 @@ function CheckoutForm() {
       <div className="w-full max-w-7xl mx-auto px-6 lg:px-12 pt-12 reveal-text">
         <header className="mb-16 border-b border-[#8F9C86]/15 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#D27D5B] block mb-3 flex items-center gap-2">
+            <span className="text-xs uppercase tracking-[0.3em] font-bold text-[#D27D5B] block mb-3 flex items-center gap-2">
               <span className="w-1.5 h-1.5 bg-[#D27D5B] rounded-full"></span>
               SYS.06 // CHECKOUT CHECKPOINT
             </span>
             <h1 className="font-serif text-5xl md:text-6xl text-[#1F2B1A] uppercase tracking-tight leading-none">
               Gifting <span className="italic font-light lowercase text-[#D27D5B]">checkout</span>
             </h1>
-            <p className="text-[10px] uppercase tracking-widest text-[#1F2B1A]/60 font-bold mt-2">Log campaign parameters & verify shipping routing</p>
+            <p className="text-xs uppercase tracking-widest text-[#1F2B1A]/60 font-bold mt-2">Log campaign parameters & verify shipping routing</p>
           </div>
-          <Link href="/catalog" className="text-[9px] uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/60 hover:text-[#D27D5B] transition-colors pb-1 border-b border-transparent hover:border-[#D27D5B]">
+          <Link href="/catalog" className="text-xs uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/60 hover:text-[#D27D5B] transition-colors pb-1 border-b border-transparent hover:border-[#D27D5B]">
             &larr; Cancel Customization
           </Link>
         </header>
@@ -199,8 +199,8 @@ function CheckoutForm() {
             {/* 1. Gifting Mode */}
             <div className="space-y-6">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] uppercase tracking-[0.25em] font-bold text-[#D27D5B]">01 /</span>
-                <h3 className="text-[10px] uppercase tracking-widest font-bold text-[#1F2B1A]">Gifting Destination Mode</h3>
+                <span className="text-xs uppercase tracking-[0.25em] font-bold text-[#D27D5B]">01 /</span>
+                <h3 className="text-xs uppercase tracking-widest font-bold text-[#1F2B1A]">Gifting Destination Mode</h3>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -212,8 +212,8 @@ function CheckoutForm() {
                       : 'border-[#8F9C86]/15 bg-transparent opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]">Individual Gesture</span>
-                  <p className="text-[11px] uppercase tracking-widest text-[#1F2B1A]/70 leading-[1.9] mt-3 font-sans font-medium">
+                  <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]">Individual Gesture</span>
+                  <p className="text-xs font-sans font-medium text-[#1F2B1A]/70 uppercase tracking-widest leading-[1.9] mt-3">
                     Dispatch a highly customized gift directly to a single destination. Secure coordinate entry below.
                   </p>
                 </div>
@@ -226,8 +226,8 @@ function CheckoutForm() {
                       : 'border-[#8F9C86]/15 bg-transparent opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]">Corporate Campaign</span>
-                  <p className="text-[11px] uppercase tracking-widest text-[#1F2B1A]/70 leading-[1.9] mt-3 font-sans font-medium">
+                  <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]">Corporate Campaign</span>
+                  <p className="text-xs font-sans font-medium text-[#1F2B1A]/70 uppercase tracking-widest leading-[1.9] mt-3">
                     Deploy gifts to multiple recipients. Upload directory databases or enable secure recipient address collectors.
                   </p>
                 </div>
@@ -237,18 +237,18 @@ function CheckoutForm() {
             {/* 2. Recipient Specifications */}
             <div className="space-y-6">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] uppercase tracking-[0.25em] font-bold text-[#D27D5B]">02 /</span>
-                <h3 className="text-[10px] uppercase tracking-widest font-bold text-[#1F2B1A]">Recipient Destination Details</h3>
+                <span className="text-xs uppercase tracking-[0.25em] font-bold text-[#D27DCD] text-[#D27D5B]">02 /</span>
+                <h3 className="text-xs uppercase tracking-widest font-bold text-[#1F2B1A]">Recipient Destination Details</h3>
               </div>
               
               {giftingMode === 'SINGLE' ? (
                 <div className="border border-[#8F9C86]/15 bg-[#F5F1E6]/30 backdrop-blur-[1px] p-8 lg:p-12 rounded-[2rem] space-y-8">
                   <div className="relative border-b border-[#8F9C86]/30 pb-2 group focus-within:border-[#D27D5B]">
-                    <label className="block text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Recipient Name</label>
+                    <label className="block text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Recipient Name</label>
                     <input 
                       type="text" 
                       required 
-                      className="w-full bg-transparent text-[11px] font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                      className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
                       placeholder="ALEX MORGAN"
                       value={singleName}
                       onChange={(e) => setSingleName(e.target.value)}
@@ -256,11 +256,11 @@ function CheckoutForm() {
                   </div>
                   
                   <div className="relative border-b border-[#8F9C86]/30 pb-2 group focus-within:border-[#D27D5B]">
-                    <label className="block text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Email Address</label>
+                    <label className="block text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Email Address</label>
                     <input 
                       type="email" 
                       required 
-                      className="w-full bg-transparent text-[11px] font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                      className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
                       placeholder="ALEX@COMPANY.COM"
                       value={singleEmail}
                       onChange={(e) => setSingleEmail(e.target.value)}
@@ -268,11 +268,11 @@ function CheckoutForm() {
                   </div>
                   
                   <div className="relative border-b border-[#8F9C86]/30 pb-2 group pt-4 focus-within:border-[#D27D5B]">
-                    <label className="block text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Street Address</label>
+                    <label className="block text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Street Address</label>
                     <input 
                       type="text" 
                       required 
-                      className="w-full bg-transparent text-[11px] font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                      className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
                       placeholder="123 SEEDLING BLVD, ROAD 4"
                       value={singleStreet}
                       onChange={(e) => setSingleStreet(e.target.value)}
@@ -281,33 +281,33 @@ function CheckoutForm() {
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="relative border-b border-[#8F9C86]/30 pb-2 group focus-within:border-[#D27D5B]">
-                      <label className="block text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">City</label>
+                      <label className="block text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">City</label>
                       <input 
                         type="text" 
                         required 
-                        className="w-full bg-transparent text-[11px] font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                        className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
                         placeholder="BEVERLY HILLS"
                         value={singleCity}
                         onChange={(e) => setSingleCity(e.target.value)}
                       />
                     </div>
                     <div className="relative border-b border-[#8F9C86]/30 pb-2 group focus-within:border-[#D27D5B]">
-                      <label className="block text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">State</label>
+                      <label className="block text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">State</label>
                       <input 
                         type="text" 
                         required 
-                        className="w-full bg-transparent text-[11px] font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                        className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
                         placeholder="CA"
                         value={singleState}
                         onChange={(e) => setSingleState(e.target.value)}
                       />
                     </div>
                     <div className="relative border-b border-[#8F9C86]/30 pb-2 group focus-within:border-[#D27D5B]">
-                      <label className="block text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">ZIP</label>
+                      <label className="block text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">ZIP</label>
                       <input 
                         type="text" 
                         required 
-                        className="w-full bg-transparent text-[11px] font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                        className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
                         placeholder="90210"
                         value={singleZip}
                         onChange={(e) => setSingleZip(e.target.value)}
@@ -326,7 +326,7 @@ function CheckoutForm() {
                       checked={collectAddressesViaLink}
                       onChange={(e) => setCollectAddressesViaLink(e.target.checked)}
                     />
-                    <label htmlFor="collect-link" className="text-[10px] uppercase tracking-widest text-[#1F2B1A] font-bold select-none cursor-pointer leading-normal">
+                    <label htmlFor="collect-link" className="text-xs uppercase tracking-widest text-[#1F2B1A] font-bold select-none cursor-pointer leading-normal">
                       Secure Address Collection Port (Recipients supply addresses via secure botanical links)
                     </label>
                   </div>
@@ -334,20 +334,20 @@ function CheckoutForm() {
                   {/* Add Bulk User Fields */}
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end border-b border-[#8F9C86]/15 pb-8">
                     <div className="md:col-span-5 relative border-b border-[#8F9C86]/30 pb-1">
-                      <label className="block text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Name</label>
+                      <label className="block text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Name</label>
                       <input 
                         type="text" 
-                        className="w-full bg-transparent text-[11px] font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                        className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
                         placeholder="ALEX MORGAN"
                         value={bulkName}
                         onChange={(e) => setBulkName(e.target.value)}
                       />
                     </div>
                     <div className="md:col-span-5 relative border-b border-[#8F9C86]/30 pb-1">
-                      <label className="block text-[8px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Email</label>
+                      <label className="block text-xs uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/50 mb-1">Email</label>
                       <input 
                         type="email" 
-                        className="w-full bg-transparent text-[11px] font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
+                        className="w-full bg-transparent text-xs font-sans uppercase tracking-widest text-[#1F2B1A] focus:outline-none placeholder:text-[#1F2B1A]/20"
                         placeholder="ALEX@COMPANY.COM"
                         value={bulkEmail}
                         onChange={(e) => setBulkEmail(e.target.value)}
@@ -366,7 +366,7 @@ function CheckoutForm() {
 
                   {/* Render Added Users */}
                   {bulkRecipients.length === 0 ? (
-                    <div className="py-10 text-center text-[10px] uppercase tracking-[0.2em] text-[#1F2B1A]/40 font-bold italic">
+                    <div className="py-10 text-center text-xs uppercase tracking-[0.2em] text-[#1F2B1A]/40 font-bold italic">
                       No coordinates log active. Populate variables above.
                     </div>
                   ) : (
@@ -374,8 +374,8 @@ function CheckoutForm() {
                       {bulkRecipients.map((rec, index) => (
                         <div key={index} className="py-4 flex justify-between items-center">
                           <div>
-                            <span className="text-[10px] uppercase tracking-wider font-bold text-[#1F2B1A]">{rec.name}</span>
-                            <span className="text-[9px] uppercase tracking-widest text-[#1F2B1A]/50 block mt-1 font-sans font-light">// {rec.email}</span>
+                            <span className="text-xs uppercase tracking-wider font-bold text-[#1F2B1A]">{rec.name}</span>
+                            <span className="text-xs uppercase tracking-widest text-[#1F2B1A]/50 block mt-1 font-sans font-light">// {rec.email}</span>
                           </div>
                           <button 
                             type="button"
@@ -395,8 +395,8 @@ function CheckoutForm() {
             {/* 3. Courier Logistics */}
             <div className="space-y-6">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] uppercase tracking-[0.25em] font-bold text-[#D27D5B]">03 /</span>
-                <h3 className="text-[10px] uppercase tracking-widest font-bold text-[#1F2B1A]">Courier Speed Allocation</h3>
+                <span className="text-xs uppercase tracking-[0.25em] font-bold text-[#D27D5B]">03 /</span>
+                <h3 className="text-xs uppercase tracking-widest font-bold text-[#1F2B1A]">Courier Speed Allocation</h3>
               </div>
               
               <div className="space-y-4">
@@ -414,8 +414,8 @@ function CheckoutForm() {
                       onChange={() => setDeliverySpeed('STANDARD')}
                     />
                     <div>
-                      <span className="text-[9px] uppercase tracking-[0.2em] font-bold block">Standard Ground Courier</span>
-                      <span className="text-[9px] uppercase tracking-widest text-[#1F2B1A]/50 font-semibold block mt-1">Delivery target in 5-7 business days</span>
+                      <span className="text-xs uppercase tracking-[0.2em] font-bold block">Standard Ground Courier</span>
+                      <span className="text-xs uppercase tracking-widest text-[#1F2B1A]/50 font-semibold block mt-1">Delivery target in 5-7 business days</span>
                     </div>
                   </div>
                   <span className="font-serif text-lg font-bold text-[#1F2B1A]">${(5.00).toFixed(2)}</span>
@@ -435,8 +435,8 @@ function CheckoutForm() {
                       onChange={() => setDeliverySpeed('EXPRESS')}
                     />
                     <div>
-                      <span className="text-[9px] uppercase tracking-[0.2em] font-bold block">Priority Express Courier</span>
-                      <span className="text-[9px] uppercase tracking-widest text-[#1F2B1A]/50 font-semibold block mt-1">Delivery target in 2-3 business days</span>
+                      <span className="text-xs uppercase tracking-[0.2em] font-bold block">Priority Express Courier</span>
+                      <span className="text-xs uppercase tracking-widest text-[#1F2B1A]/50 font-semibold block mt-1">Delivery target in 2-3 business days</span>
                     </div>
                   </div>
                   <span className="font-serif text-lg font-bold text-[#1F2B1A]">${(15.00).toFixed(2)}</span>
@@ -450,7 +450,7 @@ function CheckoutForm() {
           <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-28">
             <div className="border border-[#8F9C86]/20 bg-[#FAF6EE] p-8 rounded-[2rem] space-y-8 relative shadow-sm">
               
-              <div className="absolute top-0 right-8 border-x border-b border-[#8F9C86]/20 px-3.5 py-1.5 rounded-b-xl text-[7px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/40 bg-[#FAF6EE]">
+              <div className="absolute top-0 right-8 border-x border-b border-[#8F9C86]/20 px-3.5 py-1.5 rounded-b-xl text-[9px] uppercase tracking-[0.2em] font-bold text-[#1F2B1A]/40 bg-[#FAF6EE]">
                 SECURE HARMONY
               </div>
 
@@ -462,14 +462,14 @@ function CheckoutForm() {
                   <img src={design?.imageUrl} alt="proof render" className="w-full h-full object-cover mix-blend-multiply opacity-90" />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="text-[7px] uppercase tracking-widest text-[#D27D5B] font-bold block">Approved Custom Concept</span>
+                  <span className="text-[9px] uppercase tracking-widest text-[#D27D5B] font-bold block">Approved Custom Concept</span>
                   <h4 className="font-serif text-xl text-[#1F2B1A] uppercase tracking-tight leading-none">{design?.productName}</h4>
-                  <p className="text-[9px] uppercase tracking-widest text-[#1F2B1A]/50 font-bold mt-1">Unit value: ${unitPrice.toFixed(2)}</p>
+                  <p className="text-xs uppercase tracking-widest text-[#1F2B1A]/50 font-bold mt-1">Unit value: ${unitPrice.toFixed(2)}</p>
                 </div>
               </div>
 
               {/* Pricing breakdown */}
-              <div className="space-y-4 border-t border-b border-[#8F9C86]/15 py-6 text-[10px] uppercase tracking-widest font-bold text-[#1F2B1A]/70">
+              <div className="space-y-4 border-t border-b border-[#8F9C86]/15 py-6 text-xs uppercase tracking-widest font-bold text-[#1F2B1A]/70">
                 <div className="flex justify-between font-medium">
                   <span>Custom Items ({activeRecipientsCount} units)</span>
                   <span className="text-[#1F2B1A]">${subtotal.toFixed(2)}</span>
@@ -487,12 +487,12 @@ function CheckoutForm() {
               <button
                 onClick={handlePlaceOrder}
                 disabled={isSubmitting || (giftingMode === 'BULK' && bulkRecipients.length === 0)}
-                className="w-full py-5 bg-[#D27D5B] text-[#FAF6EE] text-[10px] tracking-[0.25em] uppercase font-bold rounded-full hover:bg-[#1F2B1A] transition-colors duration-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+                className="w-full py-5 bg-[#D27D5B] text-[#FAF6EE] text-xs tracking-[0.25em] uppercase font-bold rounded-full hover:bg-[#1F2B1A] transition-colors duration-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
               >
                 {isSubmitting ? 'Verifying Campaign Parameters...' : 'Authorize Campaign'}
               </button>
 
-              <div className="flex items-center gap-2.5 justify-center text-[7px] uppercase tracking-[0.3em] font-bold text-[#1F2B1A]/40 mt-4">
+              <div className="flex items-center gap-2.5 justify-center text-[9px] uppercase tracking-[0.3em] font-bold text-[#1F2B1A]/40 mt-4">
                 <ShieldCheck className="w-4 h-4 text-[#8F9C86]" />
                 AES-256 SSL Encryption active
               </div>
@@ -509,7 +509,7 @@ export default function Checkout() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-[#FAF6EE]">
-        <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#1F2B1A] animate-pulse">Initializing Checkout Studio...</span>
+        <span className="text-xs uppercase tracking-[0.3em] font-bold text-[#1F2B1A] animate-pulse">Initializing Checkout Studio...</span>
       </div>
     }>
       <CheckoutForm />

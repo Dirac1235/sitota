@@ -19,8 +19,16 @@ export default function Navbar() {
               </span>
             </Link>
             <div className="hidden md:flex ml-8 space-x-8">
-              <Link href="/catalog" className="text-[10px] uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors relative group py-2">
+              <Link href="/catalog" className="text-xs uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors relative group py-2">
                 Curated Collection
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#D27D5B] transition-all duration-300 group-hover:w-full rounded-full"></span>
+              </Link>
+              <Link href="/about" className="text-xs uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors relative group py-2">
+                Our Story
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#D27D5B] transition-all duration-300 group-hover:w-full rounded-full"></span>
+              </Link>
+              <Link href="/how-it-works" className="text-xs uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors relative group py-2">
+                How It Works
                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#D27D5B] transition-all duration-300 group-hover:w-full rounded-full"></span>
               </Link>
             </div>
@@ -30,25 +38,25 @@ export default function Navbar() {
           <div className="flex items-center space-x-4 md:space-x-8 h-full pl-6">
             {session ? (
               <div className="flex items-center h-full space-x-6 md:space-x-8">
-                <Link href="/dashboard" className="text-[10px] uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors">
+                <Link href="/dashboard" className="text-xs uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors">
                   Workspace
                 </Link>
-                <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#8F9C86] hidden sm:block">
+                <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#8F9C86] hidden sm:block">
                   🌳 {session.user?.name || session.user?.email}
                 </span>
                 <button
                   onClick={() => signOut({ callbackUrl: '/' })}
-                  className="px-6 py-2.5 bg-[#1F2B1A] text-[#FAF6EE] text-[9px] uppercase tracking-[0.2em] font-bold rounded-full hover:bg-[#D27D5B] transition-colors duration-300 shadow-sm"
+                  className="px-6 py-3 bg-[#1F2B1A] text-[#FAF6EE] text-xs uppercase tracking-[0.2em] font-bold rounded-full hover:bg-[#D27D5B] transition-colors duration-300 shadow-sm"
                 >
                   Log Out
                 </button>
               </div>
             ) : (
               <div className="flex items-center space-x-4">
-                <Link href="/login" className="text-[10px] uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors py-2 px-4 rounded-full">
+                <Link href="/login" className="text-xs uppercase tracking-[0.25em] font-bold text-[#1F2B1A]/70 hover:text-[#1F2B1A] transition-colors py-2 px-4 rounded-full">
                   Login
                 </Link>
-                <Link href="/register" className="px-6 py-3 bg-[#D27D5B] text-[#FAF6EE] text-[9px] uppercase tracking-[0.25em] font-bold rounded-full hover:bg-[#1F2B1A] transition-colors duration-300 shadow-sm">
+                <Link href="/register" className="px-6 py-3.5 bg-[#D27D5B] text-[#FAF6EE] text-xs tracking-[0.25em] font-bold rounded-full hover:bg-[#1F2B1A] transition-colors duration-300 shadow-sm">
                   Register
                 </Link>
               </div>

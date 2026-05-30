@@ -3,6 +3,7 @@ import { Cormorant, Manrope } from 'next/font/google';
 import './globals.css';
 import Navbar from './components/Navbar';
 import SessionProvider from './components/SessionProvider';
+import Link from 'next/link';
 
 const cormorant = Cormorant({ 
   weight: ['300', '400', '500', '600', '700'], 
@@ -45,9 +46,9 @@ export default function RootLayout({
             </div>
             <div className="font-sans text-[10px] uppercase tracking-widest space-y-4">
               <p className="text-[#D27D5B] font-bold mb-6">Platform</p>
-              <p className="hover:text-[#D27D5B] cursor-pointer transition-colors duration-300">Curated Index</p>
-              <p className="hover:text-[#D27D5B] cursor-pointer transition-colors duration-300">Natural Bundles</p>
-              <p className="hover:text-[#D27D5B] cursor-pointer transition-colors duration-300">Bespoke Design</p>
+              <Link href="/catalog" className="hover:text-[#D27D5B] transition-colors duration-300 block">Curated Index</Link>
+              <Link href="/about" className="hover:text-[#D27D5B] transition-colors duration-300 block">Our Story</Link>
+              <Link href="/how-it-works" className="hover:text-[#D27D5B] transition-colors duration-300 block">How It Works</Link>
             </div>
             <div className="font-sans text-[10px] uppercase tracking-widest space-y-4">
               <p className="text-[#D27D5B] font-bold mb-6">Connect</p>
