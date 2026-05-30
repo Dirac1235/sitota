@@ -103,7 +103,7 @@ export default function Navbar() {
                     <div className="border-t border-[#8F9C86]/10 mt-2 pt-2">
                       <button
                         onClick={() => signOut({ callbackUrl: '/' })}
-                        className="w-full text-left px-5 py-3 hover:bg-red-600 hover:text-white text-xs uppercase tracking-wider font-extrabold text-red-700 transition-colors flex items-center gap-3 border-0 bg-transparent cursor-pointer"
+                        className="w-full text-left px-5 py-3 hover:bg-[#D27D5B] hover:text-[#FAF6EE] text-xs uppercase tracking-wider font-extrabold text-[#D27D5B] transition-colors flex items-center gap-3 border-0 bg-transparent cursor-pointer"
                       >
                         <LogOut className="w-4 h-4 opacity-70" /> Sign Out
                       </button>
